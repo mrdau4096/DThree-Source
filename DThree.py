@@ -1,4 +1,4 @@
-import discord, asyncio, random, importlib
+import discord, asyncio, random, importlib, os
 from games.chess import checkChessGames, testImage
 from games.noughtsAndCrosses import checkNoughtsAndCrossesGames
 from exct.responses import checkReplies
