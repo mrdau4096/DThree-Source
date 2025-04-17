@@ -141,6 +141,9 @@ async def on_message(message):
 # Load and run the bot with the token
 token = os.getenv("BOT_TOKEN")
 
+async def startDThree(token):
+	await client.start(token)
+
 # Start everything
 if __name__ == "__main__":
-	await client.start(token)
+	asyncio.run(startDThree(token))
