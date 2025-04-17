@@ -1,4 +1,4 @@
-import discord, asyncio, random, importlib, os
+import discord, asyncio, random, importlib, os, subprocess, datetime
 from games.chess import checkChessGames, testImage
 from games.noughtsAndCrosses import checkNoughtsAndCrossesGames
 from exct.responses import checkReplies
@@ -138,12 +138,38 @@ async def on_message(message):
 
 
 
+
+def backupData():
+	githubToken = os.getenv("GITHUB_TOKEN")
+	url = f"https://{githubToken}@github.com/mrdau4096/"
+	cloneDir = "/data-backups"
+
+	subprocess.run(["git", "clone", url, cloneDir])
+	subprocess.run(["cp", "-r", "data/", os.path.join(cloneDir, "data")])
+
+	subprocess.run(["git", "-C", cloneDir, "add", "."])
+	subprocess.run(["git", "-C", cloneDir, "commit", "-m", f"{datetime.now()}"])
+	subprocess.run(["git", "-C", cloneDir, "push"])
+
+
+async def backgroundActions(client):
+	D3StartTime = time.time()
+	while True:
+		backupData()
+		await asyncio.sleep(3600)
+
+
+
+
+
 # Load and run the bot with the token
 token = os.getenv("BOT_TOKEN")
 
-async def startDThree(token):
-	await client.start(token)
+async def main(token):
+	bgTask = asyncio.create_task(backgroundActions(client))
+	DThreeTask = asyncio.create_task(client.start(token))
+	await asyncio.gather(bgTask, DThreeTask)
 
 # Start everything
 if __name__ == "__main__":
-	asyncio.run(startDThree(token))
+	asyncio.run(main(token))
