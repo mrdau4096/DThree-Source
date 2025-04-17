@@ -16,9 +16,9 @@ def lookUp(query):
 
 			disallowed = False
 			#Filted blocked words/phrases.
-			with open("C:\\Users\\User\\Documents\\code\\.py\\discord\\data\\bannedTitles.txt", "r") as badTitles:
+			with open("data/bannedTitles.txt", "r") as badTitles:
 				badTitleWords = badTitles.readlines()
-			with open("C:\\Users\\User\\Documents\\code\\.py\\discord\\data\\bannedURLs.txt", "r") as badURLs:
+			with open("data/bannedURLs.txt", "r") as badURLs:
 				badURLWords = badURLs.readlines()
 			if any(banned.strip() in title.lower() for banned in badTitleWords):
 				continue

@@ -25,15 +25,15 @@ async def on_ready():
 
 async def otherTasks(message, messageData, userDisplayName):
 	"""Handles all other asynchronous tasks."""
-	with open("data\\wordsSinceSpanishInquisition", "r") as spainFile:
+	with open("data/wordsSinceSpanishInquisition.txt", "r") as spainFile:
 		wordsSinceSpanishInquisition = int(spainFile.readlines()[0].strip())
 		wordsSinceSpanishInquisition += 1
 		if wordsSinceSpanishInquisition > 1024:
 			if random.randint(0, 1024) == 128:
-				await message.reply(file=discord.File("imgs\\Inquisition.gif"), mention_author=True)
+				await message.reply(file=discord.File("imgs/Inquisition.gif"), mention_author=True)
 				wordsSinceSpanishInquisition = 0
 
-	with open("data\\wordsSinceSpanishInquisition", "w") as spainFile:
+	with open("data/wordsSinceSpanishInquisition.txt", "w") as spainFile:
 		spainFile.write(str(wordsSinceSpanishInquisition))
 
 	if messageData.startswith("/help"):

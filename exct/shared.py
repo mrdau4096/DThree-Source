@@ -17,21 +17,21 @@ def formatNumber(num, seperator=",", delimiter="."):
 	return formatted.replace(",", "__TMP__").replace(".", delimiter).replace("__TMP__", seperator)
 
 async def sendMessage(message, messageText):
-	with open("data\\log.txt", "a", encoding="utf-8") as logFile:
+	with open("data/log.txt", "a", encoding="utf-8") as logFile:
 		if "*An error occurred;*" not in messageText:
 			logFile.write("\n" + f"{getTime()} // {message.guild} // SEND {message.author} // {messageText}".replace('\n', ';'))
 
 	await message.channel.send(messageText)
 
 async def replyMessage(message, messageText, ping=False):
-	with open("data\\log.txt", "a", encoding="utf-8") as logFile:
+	with open("data/log.txt", "a", encoding="utf-8") as logFile:
 		if "*An error occurred;*" not in messageText:
 			logFile.write("\n" + f"{getTime()} // {message.guild} // REPLY {message.author} // {messageText.strip()}")
 
 	await message.reply(messageText, mention_author=ping)
 
 async def updateRepo(message=None):
-	os.chdir("C:\\Users\\User\\Documents\\GitHub\\DThree")
+	os.chdir("C:/Users/User/Documents/GitHub/DThree")
 	subprocess.run(["git", "fetch", "--all"])  #Fetch all branches
 	subprocess.run(["git", "reset", "--hard", "origin/main"])  #Reset local branch
 	subprocess.run(["git", "pull", "origin", "main"])  #Pull changes
