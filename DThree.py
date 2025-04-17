@@ -3,7 +3,6 @@ from games.chess import checkChessGames, testImage
 from games.noughtsAndCrosses import checkNoughtsAndCrossesGames
 from exct.responses import checkReplies
 from exct.memeBrowse import browseMemes
-from exct.dau import dauDebug, pingDau
 from exct.webSearch import lookUp
 from exct.shared import removeNonASCII, getTime, updateRepo, sendMessage, replyMessage
 import games.economy
@@ -17,11 +16,6 @@ client = discord.Client(intents=intents)
 
 gameSuffixes = ("o&x", "n&c", "ttt", "tictactoe", "noughtsandcrosses", "chess")
 
-
-async def terminal_input_task():
-	"""Run terminal input (via dauDebug) without blocking other tasks."""
-	while True:
-		await dauDebug()
 
 
 @client.event
@@ -108,7 +102,6 @@ async def otherTasks(message, messageData, userDisplayName):
 
 
 	#Replace shabbles, handle games, memes, and economy
-	pingDau(message, messageData)
 	await checkReplies(messageData, message)
 	await games.economy.econIterate(message, messageData)
 	await checkNoughtsAndCrossesGames(userDisplayName, messageData, message)
@@ -144,16 +137,10 @@ async def on_message(message):
 		await replyMessage(message, f"## *An error occurred;*\n{str(E)}\n-# *Please wait.*", ping=True)
 
 
-async def main(token):
-	terminal_task = asyncio.create_task(dauDebug(client))
-	bot_task = asyncio.create_task(client.start(token))
-	
-	await asyncio.gather(terminal_task, bot_task)
-
 
 # Load and run the bot with the token
 token = os.getenv("BOT_TOKEN")
 
 # Start everything
 if __name__ == "__main__":
-	asyncio.run(main(token))
+	client.start(token)

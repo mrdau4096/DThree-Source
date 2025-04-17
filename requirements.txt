@@ -3,5 +3,4 @@ matplotlib
 pandas
 numpy
 aioconsole
-pywin32
 duckduckgo-search
