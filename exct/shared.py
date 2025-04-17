@@ -31,7 +31,7 @@ async def replyMessage(message, messageText, ping=False):
 	await message.reply(messageText, mention_author=ping)
 
 async def updateRepo(message=None):
-	os.chdir("C:/Users/User/Documents/GitHub/DThree")
+	os.chdir("textFiles")
 	subprocess.run(["git", "fetch", "--all"])  #Fetch all branches
 	subprocess.run(["git", "reset", "--hard", "origin/main"])  #Reset local branch
 	subprocess.run(["git", "pull", "origin", "main"])  #Pull changes

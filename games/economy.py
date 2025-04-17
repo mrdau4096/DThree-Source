@@ -289,7 +289,7 @@ def writeCSV(file_path):
 
 def createFakeCompany():
 	fakeCEOName = f"_{round(time.time()*1000)}"
-	with open("C:/Users/User/Documents/GitHub/DThree/fakeCompanyNames.txt", "r") as nameFile:
+	with open("textFiles/fakeCompanyNames.txt", "r") as nameFile:
 		randomName = random.choice(nameFile.readlines())
 	fakeCompany = Company(fakeCEOName, randomName.strip())
 
