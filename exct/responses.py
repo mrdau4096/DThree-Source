@@ -108,7 +108,8 @@ def occurrences_preprocess_data(filename, userword):
 
 	userData = {}
 	for name, group in df.groupby("Name"):
-		userSeries = group.set_index("Date")["Occurrences"].reindex(allDates, fill_value=np.nan)
+		daily_occurrences = group.groupby("Date")["Occurrences"].sum()
+		userSeries = daily_occurrences.reindex(allDates, fill_value=np.nan)
 		
 		if np.isnan(userSeries.iloc[0]):
 			userSeries.iloc[0] = 0

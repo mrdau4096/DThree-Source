@@ -25,7 +25,6 @@ async def on_ready():
 
 async def otherTasks(message, messageData, userDisplayName):
 	"""Handles all other asynchronous tasks."""
-	"""
 	with open("data/wordsSinceSpanishInquisition.txt", "r") as spainFile:
 		wordsSinceSpanishInquisition = int(spainFile.readlines()[0].strip())
 		wordsSinceSpanishInquisition += 1
@@ -36,7 +35,6 @@ async def otherTasks(message, messageData, userDisplayName):
 
 	with open("data/wordsSinceSpanishInquisition.txt", "w") as spainFile:
 		spainFile.write(str(wordsSinceSpanishInquisition))
-	"""
 
 	if messageData.startswith("/help"):
 		helpMessage = f"""
