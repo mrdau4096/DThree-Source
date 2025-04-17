@@ -153,7 +153,8 @@ def backupData():
 
 	subprocess.run(["git", "-C", cloneDir, "add", "."])
 	subprocess.run(["git", "-C", cloneDir, "commit", "-m", f"{datetime.datetime.now()}"])
-	subprocess.run(["git", "-C", cloneDir, "push"])
+	subprocess.run(["git", "-C", cloneDir, "branch", "-M", "main"])
+	subprocess.run(["git", "-C", cloneDir, "push", "-u", "origin", "main"])
 
 
 async def backgroundActions(client):
