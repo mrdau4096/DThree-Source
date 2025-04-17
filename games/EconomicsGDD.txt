@@ -1,0 +1,17 @@
+GAME DESIGN DOCUMENT
+Company Economics Game
+The player plays as a company. The company can build factories and buy other assets, and has to manage their assets to survive as long as possible.
+
+Core gameplay loop:
+Choose how to act, by buying or waiting. Random event where another company can lend money is also possible. The player has to decide if they want to take the risk. The company borrowing can either start giving the player money, or just keep in debt to the player.
+
+What can be bought.
+Factories add 1 income to the base income.
+Cars is just solid assets.
+Estate can be bought at multiple locations.
+
+There are chanses that the assets will be lost. The estates have different locations, but if a location is lost, then all the estates at that locations will also be lost.
+Factories can burn down.
+Cars can be moved between estate locations.
+
+There is a chance that the company that money was lent to will fail, and risk for the lent money to dissapear.
