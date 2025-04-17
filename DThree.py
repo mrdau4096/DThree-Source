@@ -142,7 +142,7 @@ async def on_message(message):
 def backupData():
 	githubToken = os.getenv("GITHUB_TOKEN")
 	url = f"https://{githubToken}@github.com/mrdau4096/"
-	cloneDir = "/data-backups"
+	cloneDir = "/tmp/data-backups"
 
 	subprocess.run(["git", "clone", url, cloneDir])
 	subprocess.run(["cp", "-r", "data/", os.path.join(cloneDir, "data")])
