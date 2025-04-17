@@ -4,3 +4,4 @@ pandas
 numpy
 aioconsole
 duckduckgo-search
+pygame
