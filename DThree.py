@@ -143,4 +143,4 @@ token = os.getenv("BOT_TOKEN")
 
 # Start everything
 if __name__ == "__main__":
-	client.start(token)
+	await client.start(token)
