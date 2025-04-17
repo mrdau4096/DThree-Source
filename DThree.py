@@ -147,6 +147,10 @@ def backupData():
 	subprocess.run(["git", "clone", url, cloneDir])
 	subprocess.run(["cp", "-r", "data/", os.path.join(cloneDir, "data")])
 
+	subprocess.run(["git", "-C", cloneDir, "config", "user.email", "d3@render.com"])
+	subprocess.run(["git", "-C", cloneDir, "config", "user.name", "DThree"])
+
+
 	subprocess.run(["git", "-C", cloneDir, "add", "."])
 	subprocess.run(["git", "-C", cloneDir, "commit", "-m", f"{datetime.datetime.now()}"])
 	subprocess.run(["git", "-C", cloneDir, "push"])
