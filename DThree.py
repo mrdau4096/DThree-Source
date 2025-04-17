@@ -31,15 +31,15 @@ async def on_ready():
 
 async def otherTasks(message, messageData, userDisplayName):
 	"""Handles all other asynchronous tasks."""
-	with open("C:\\Users\\User\\Documents\\code\\.py\\discord\\data\\wordsSinceSpanishInquisition", "r") as spainFile:
+	with open("data\\wordsSinceSpanishInquisition", "r") as spainFile:
 		wordsSinceSpanishInquisition = int(spainFile.readlines()[0].strip())
 		wordsSinceSpanishInquisition += 1
 		if wordsSinceSpanishInquisition > 1024:
 			if random.randint(0, 1024) == 128:
-				await message.reply(file=discord.File("C:\\Users\\User\\Documents\\code\\.py\\discord\\imgs\\Inquisition.gif"), mention_author=True)
+				await message.reply(file=discord.File("imgs\\Inquisition.gif"), mention_author=True)
 				wordsSinceSpanishInquisition = 0
 
-	with open("C:\\Users\\User\\Documents\\code\\.py\\discord\\data\\wordsSinceSpanishInquisition", "w") as spainFile:
+	with open("data\\wordsSinceSpanishInquisition", "w") as spainFile:
 		spainFile.write(str(wordsSinceSpanishInquisition))
 
 	if messageData.startswith("/help"):
@@ -141,7 +141,7 @@ async def on_message(message):
 	
 	except Exception as E:
 		print(f"\a\n{E}\n")
-		await replyMessage(message, f"## *An error occurred;*\n{str(E).replace('C:/Users/User/Documents/code/.py', '').replace('C:/Users/User/Documents/GitHub', '')}\n-# *Please wait.*", ping=True)
+		await replyMessage(message, f"## *An error occurred;*\n{str(E)}\n-# *Please wait.*", ping=True)
 
 
 async def main(token):
@@ -152,8 +152,7 @@ async def main(token):
 
 
 # Load and run the bot with the token
-with open(r"C:\\Users\\User\\Documents\\code\\.py\\DThree Token") as tokenFile:
-	token = tokenFile.readline().strip("\n")
+token = os.getenv("BOT_TOKEN")
 
 # Start everything
 if __name__ == "__main__":

@@ -38,14 +38,14 @@ async def choiceCommand(messageData, message, fileName, imgFile=None):
 			if chosenLine != ":img:":
 				await replyMessage(message, chosenLine.replace("Â¬", "\n").replace("¬", "\n"), ping=True)
 			else:
-				await message.reply(file=discord.File(f"C:\\Users\\User\\Documents\\code\\.py\\discord\\imgs\\{imgFile}.png"), mention_author=True)
+				await message.reply(file=discord.File(f"imgs\\{imgFile}.png"), mention_author=True)
 
 
 
 
 #Stats
 
-def occurrences_updateOccurrences(name, words, filename="C:\\Users\\User\\Documents\\code\\.py\\discord\\data\\wordOccurrences.csv"):
+def occurrences_updateOccurrences(name, words, filename="data\\wordOccurrences.csv"):
 	date = datetime.datetime.now().strftime("%Y-%m-%d")
 
 	words = [word.replace("\n", "`").strip().lower() for word in words]
@@ -117,7 +117,7 @@ def occurrences_preprocess_data(filename, userword):
 	return userData, earliestDate, latestDate
 
 
-async def occurrences_saveGraph(word, message, filename="C:\\Users\\User\\Documents\\code\\.py\\discord\\data\\wordOccurrences.csv"):
+async def occurrences_saveGraph(word, message, filename="data\\wordOccurrences.csv"):
 	today = datetime.datetime.strptime(datetime.datetime.now().strftime("%d-%m-%Y"), "%d-%m-%Y")
 	sept1 = datetime.datetime.strptime("01-09-2024", "%d-%m-%Y")
 	plt.clf()
@@ -155,11 +155,11 @@ async def occurrences_saveGraph(word, message, filename="C:\\Users\\User\\Docume
 	plt.grid(True, which='both', linestyle='--', linewidth=0.7, color='gray')
 
 	#Save the plot as an image file
-	plt.savefig('C:\\Users\\User\\Documents\\code\\.py\\discord\\imgs\\graph.png')
+	plt.savefig('imgs\\graph.png')
 	plt.close()
 
 	await sendMessage(message, f"Collating data for {word}")
-	await message.channel.send(file=discord.File("C:\\Users\\User\\Documents\\code\\.py\\discord\\imgs\\graph.png"))
+	await message.channel.send(file=discord.File("imgs\\graph.png"))
 
 
 
@@ -193,7 +193,7 @@ async def getTotalWords(message):
 	totalWords = 0
 	
 	#Read and aggregate occurrences from the CSV file
-	with open('C:\\Users\\User\\Documents\\code\\.py\\discord\\data\\wordOccurrences.csv', 'r') as csvfile:
+	with open('data\\wordOccurrences.csv', 'r') as csvfile:
 		reader = csv.DictReader(csvfile)
 		for row in reader:
 			name = row['Name']
@@ -239,7 +239,7 @@ async def leaderboard(message):
 	sortedList = []
 	
 	#Read and aggregate occurrences from the CSV file
-	with open('C:\\Users\\User\\Documents\\code\\.py\\discord\\data\\wordOccurrences.csv', 'r') as csvfile:
+	with open('data\\wordOccurrences.csv', 'r') as csvfile:
 		reader = csv.DictReader(csvfile)
 		for row in reader:
 			name = row['Name']
@@ -285,7 +285,7 @@ def fish_updateOccurrences(name, filename):
 	data = defaultdict(lambda: defaultdict(int))
 
 	try:
-		with open('C:\\Users\\User\\Documents\\code\\.py\\discord\\data\\fish.csv', 'r') as csvfile:
+		with open('data\\fish.csv', 'r') as csvfile:
 			reader = csv.DictReader(csvfile)
 			for row in reader:
 				current_name = row['Name']
@@ -299,7 +299,7 @@ def fish_updateOccurrences(name, filename):
 	data[name][date] += 1
 
 	#Write the updated data back to the CSV file
-	with open(f'C:\\Users\\User\\Documents\\code\\.py\\discord\\data\\fish.csv', 'w', newline='') as csvfile:
+	with open(f'data\\fish.csv', 'w', newline='') as csvfile:
 		writer = csv.writer(csvfile)
 		writer.writerow(["Name", "Date", "Occurrences"])
 		for current_name, dates in data.items():
@@ -313,7 +313,7 @@ def fish_preprocess_data(filename):
 	#Read the CSV file into a dictionary
 	data = defaultdict(list)
 
-	with open("C:\\Users\\User\\Documents\\code\\.py\\discord\\data\\fish.csv", 'r') as csvfile:
+	with open("data\\fish.csv", 'r') as csvfile:
 		reader = csv.DictReader(csvfile)
 		for row in reader:
 			name = row['Name']
@@ -323,7 +323,7 @@ def fish_preprocess_data(filename):
 
 	#Initialize variables to find the earliest and latest date
 	earliest_date = datetime.datetime.strptime("01-09-2024", "%d-%m-%Y")
-	latest_date = max(datetime.datetime.strptime(row['Date'], "%Y-%m-%d") for row in csv.DictReader(open("C:\\Users\\User\\Documents\\code\\.py\\discord\\data\\fish.csv")))
+	latest_date = max(datetime.datetime.strptime(row['Date'], "%Y-%m-%d") for row in csv.DictReader(open("data\\fish.csv")))
 
 	#Generate a complete list of all dates between the earliest and latest date
 	all_dates = pd.date_range(start=sept1, end=today).strftime("%Y-%m-%d")
@@ -374,7 +374,7 @@ def fish_saveGraph(filename):
 	plt.grid(True, which='both', linestyle='--', linewidth=0.7, color='gray')
 
 	#Save the plot as an image file
-	plt.savefig('C:\\Users\\User\\Documents\\code\\.py\\discord\\imgs\\graph.png')
+	plt.savefig('imgs\\graph.png')
 	plt.close()
 
 
@@ -466,7 +466,7 @@ async def checkReplies(messageData, message):
 		"""
 		fish_saveGraph("fish")
 		await replyMessage(message, "Collating data;\nFish occurrences over time, per user")
-		await message.channel.send(file=discord.File("C:\\Users\\User\\Documents\\code\\.py\\discord\\imgs\\graph.png"))
+		await message.channel.send(file=discord.File("imgs\\graph.png"))
 
 
 	elif ("america" in messageData):

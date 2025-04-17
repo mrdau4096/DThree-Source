@@ -353,7 +353,7 @@ def grantMoney(who, amount, ceo=True, company=False):
 
 
 
-readCSV("C:/Users/User/Documents/code/.py/discord/data/econ.csv")
+readCSV("data/econ.csv")
 
 
 async def econIterate(message, messageData, forceRandomEvent=False, output=True, forceUnBusy=False):
@@ -363,7 +363,7 @@ async def econIterate(message, messageData, forceRandomEvent=False, output=True,
 
 	user = str(message.author)
 	if messageData.startswith("/econ save"):
-		writeCSV("C:/Users/User/Documents/code/.py/discord/data/econ.csv")
+		writeCSV("data/econ.csv")
 		replyMessage(message, "Successfully saved to econ.csv")
 		return
 
@@ -987,15 +987,15 @@ Spaces are allowed, linebreaks are not.
 	except Exception as E:
 		print(f"\a\n{E}\n")
 		if not forceUnBusy: busy = False
-		await replyMessage(message, f"## *An error occurred;*\n{str(E).replace('C:/Users/User/Documents/code/.py', '').replace('C:/Users/User/Documents/GitHub', '')}\n-# *Please wait.*", ping=True)
+		await replyMessage(message, f"## *An error occurred;*\n{str(E)}\n-# *Please wait.*", ping=True)
 
 
 ### Setup ###
 """
-writeCSV("C:/Users/User/Documents/code/.py/discord/data/econ.csv", {}) #Clear CSV for testing.
+writeCSV("data/econ.csv", {}) #Clear CSV for testing.
 
 for _ in range(3):
 	createFakeCompany()
 	time.sleep(0.05)
-writeCSV("C:/Users/User/Documents/code/.py/discord/data/econ.csv", companies)
+writeCSV("data/econ.csv", companies)
 """

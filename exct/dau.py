@@ -28,7 +28,7 @@ def onTerminalClose(signalType):
 	global client
 	print("Terminal Exit event triggered, saving CSV and safely closing.")
 	if client is not None: asyncio.run(client.close)
-	writeCSV("C:/Users/User/Documents/code/.py/discord/data/econ.csv")
+	writeCSV("data/econ.csv")
 	return True
 
 
@@ -42,7 +42,7 @@ async def dauDebug(cli):
 	#Set D3's status to be from the status file.
 	"""
 	if client is not None:
-		with open("C:/Users/User/Documents/code/.py/discord/data/status.txt", "r") as statusFile:
+		with open("data/status.txt", "r") as statusFile:
 			await client.change_presence(activity=discord.Game(name=statusFile.readline().strip()))
 	"""
 
@@ -55,7 +55,7 @@ async def dauDebug(cli):
 					#TKinter Messagebox provided by Shabbr.
 					if (len(commandSections) > 1 and commandSections[1].lower() == "-y") or messagebox.askyesno("DThree", "Are you sure you want to exit?"):
 						await client.close()
-						writeCSV("C:/Users/User/Documents/code/.py/discord/data/econ.csv")
+						writeCSV("data/econ.csv")
 						sys.exit()
 
 
@@ -130,7 +130,7 @@ async def dauDebug(cli):
 
 
 				case "check-log":
-					with open("C:/Users/User/Documents/code/.py/discord/data/log.txt", "r", encoding="utf-8") as logFile:
+					with open("data/log.txt", "r", encoding="utf-8") as logFile:
 						logs = logFile.readlines()
 
 					logsRequested = []
@@ -168,7 +168,7 @@ async def dauDebug(cli):
 							continue
 
 					elif commandSections[2].lower() == "-f":
-						with open("C:/Users/User/Documents/code/.py/discord/data/status.txt", "r") as statusFile:
+						with open("data/status.txt", "r") as statusFile:
 							newStatus = statusFile.readline().strip()
 
 					else:
@@ -183,7 +183,7 @@ async def dauDebug(cli):
 						continue
 					match commandSections[1].lower():
 						case "save":
-							writeCSV("C:/Users/User/Documents/code/.py/discord/data/econ.csv")
+							writeCSV("data/econ.csv")
 
 
 						case "force-unbusy":
@@ -220,7 +220,7 @@ async def dauDebug(cli):
 							"wordOccurrences.csv",
 							"wordsSinceSpanishInquisition",
 						)
-						src = "C:/Users/User/Documents/code/.py/discord/data"
+						src = "data"
 						dest = "E:/D3 Backup"
 
 						for fileName in files:

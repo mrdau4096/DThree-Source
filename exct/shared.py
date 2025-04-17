@@ -17,14 +17,14 @@ def formatNumber(num, seperator=",", delimiter="."):
 	return formatted.replace(",", "__TMP__").replace(".", delimiter).replace("__TMP__", seperator)
 
 async def sendMessage(message, messageText):
-	with open("C:\\Users\\User\\Documents\\code\\.py\\discord\\data\\log.txt", "a", encoding="utf-8") as logFile:
+	with open("data\\log.txt", "a", encoding="utf-8") as logFile:
 		if "*An error occurred;*" not in messageText:
 			logFile.write("\n" + f"{getTime()} // {message.guild} // SEND {message.author} // {messageText}".replace('\n', ';'))
 
 	await message.channel.send(messageText)
 
 async def replyMessage(message, messageText, ping=False):
-	with open("C:\\Users\\User\\Documents\\code\\.py\\discord\\data\\log.txt", "a", encoding="utf-8") as logFile:
+	with open("data\\log.txt", "a", encoding="utf-8") as logFile:
 		if "*An error occurred;*" not in messageText:
 			logFile.write("\n" + f"{getTime()} // {message.guild} // REPLY {message.author} // {messageText.strip()}")
 

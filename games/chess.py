@@ -282,8 +282,8 @@ async def testImage(message):
 						team = 0 if False else 1 #Add teams later
 						drawImg(surface, "sheet-1.png", (X*128, Y*128), (128, 128), sheetPos=f"{team}{tile}")
 			PG.display.flip()
-			PG.image.save(surface, "C:\\Users\\User\\Documents\\code\\.py\\discord\\imgs\\board.png")
-			await message.channel.send(file=discord.File("C:\\Users\\User\\Documents\\code\\.py\\discord\\imgs\\board.png"))
+			PG.image.save(surface, "imgs\\board.png")
+			await message.channel.send(file=discord.File("imgs\\board.png"))
 
 
 
@@ -292,8 +292,8 @@ async def testImage(message):
 			drawImg(surface, "test.png", (0, 0), (128, 128))
 			drawImg(surface, "sheet-1.png", (128, 0), (128, 128), sheetPos="15")
 			PG.display.flip()
-			PG.image.save(surface, "C:\\Users\\User\\Documents\\code\\.py\\discord\\imgs\\board.png")
-			await message.channel.send(file=discord.File("C:\\Users\\User\\Documents\\code\\.py\\discord\\imgs\\board.png"))
+			PG.image.save(surface, "imgs\\board.png")
+			await message.channel.send(file=discord.File("imgs\\board.png"))
 
 
 
@@ -311,7 +311,7 @@ def drawBoard(surface):
 def drawText(SCREEN, TEXT, POSITION, FONT_SIZE, COLOUR=(255, 255, 255)):
 	raise ValueError("No font in filepath.")
 	#Draws text on a given surface, with colour, size and position.
-	FONT = PG.font.Font('C:\\Users\\User\\Documents\\code\\.py\\discord\\data\\PressStart2P-Regular.ttf', FONT_SIZE)
+	FONT = PG.font.Font('data\\PressStart2P-Regular.ttf', FONT_SIZE)
 	text_surface = FONT.render(str(TEXT), True, COLOUR)
 	SCREEN.blit(text_surface, POSITION)
 
