@@ -160,8 +160,9 @@ def backupData():
 async def backgroundActions(client):
 	D3StartTime = time.time()
 	while True:
+		updateRepo()
 		backupData()
-		await asyncio.sleep(3600)
+		await asyncio.sleep(3600) #60*60, 1 hour.
 
 
 
