@@ -51,7 +51,7 @@ async def browseMemes(userDisplayName, messageData, message):
 		for key, data in commonMistakes.items():
 			if (key.lower()) == (data.lower()): continue
 			reply += f"{key} -> {data}\n"
-		replyMessage(message, reply)
+		await replyMessage(message, reply)
 
 	elif messageData.startswith("/browse"):
 		folder = message.content.replace("/browse", "").strip().lower().capitalize()
