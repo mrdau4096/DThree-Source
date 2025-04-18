@@ -31,7 +31,7 @@ commonMistakes = {
 	"Tf2": "Team Fort the Second", "Team fortress 2": "Team Fort the Second", "Team Fortress": "Team Fort the Second",
 	"Hl1 or bm": "HL1 OR BM", "Half life 1": "HL1 OR BM", "Black mesa": "HL1 OR BM",
 	"Hl2": "HL2", "Half life 2": "HL2",
-	"Virtual end": "In the Virtual End", "In the virtual end": "In the Virtual End", "Virtual": "In the Virtual End"
+	"Virtual end": "In the Virtual End", "In the virtual end": "In the Virtual End", "Virtual": "In the Virtual End",
 	"History or combat": "History OR Combat", "History": "History OR Combat", "Combat": "History OR Combat",
 }
 
