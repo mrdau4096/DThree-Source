@@ -160,7 +160,6 @@ def backupData():
 async def backgroundActions(client):
 	D3StartTime = time.time()
 	while True:
-		#await updateRepo() #Update textfiles repo.
 		backupData() #Backup /data/
 		await asyncio.sleep(3600) #60*60, 1 hour.
 
@@ -168,8 +167,6 @@ async def backgroundActions(client):
 
 
 
-# Load and run the bot with the token
-token = os.getenv("BOT_TOKEN")
 
 async def main(token):
 	bgTask = asyncio.create_task(backgroundActions(client))
@@ -178,4 +175,5 @@ async def main(token):
 
 # Start everything
 if __name__ == "__main__":
+	token = os.getenv("BOT_TOKEN")
 	asyncio.run(main(token))
