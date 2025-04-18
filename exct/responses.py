@@ -242,7 +242,7 @@ async def leaderboard(message):
 	unsortedList = []
 	sortedList = []
 	
-	#Read and aggregate occurrences from the CSV file
+	#Also read and aggregate occurrences from the CSV file
 	with open('data/wordOccurrences.csv', 'r') as csvfile:
 		reader = csv.DictReader(csvfile)
 		for row in reader:
@@ -464,6 +464,7 @@ async def checkReplies(messageData, message):
 			
 
 	elif (messageData.startswith("/pescagrafi")) or (messageData.startswith("/pescagraphy")):
+		#Old functionality; Now shows graph.
 		"""
 		with open("exct/fishCount", "r") as fishFile:
 			await sendMessage(message, f"There have been {int(fishFile.readlines()[0].strip())} fish since [15:08, 02/09/24].")
