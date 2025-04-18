@@ -5,7 +5,7 @@ from exct.shared import sendMessage, replyMessage
 userDirs = {}
 initialDirs = {}
 prevFiles = {}
-defaultPath = r"C:\Users\User\Pictures\Discmemes"
+defaultPath = r"/project/src/disk"
 supportedExtensions = (
 	".png",
 	".jpg",
