@@ -1,9 +1,0 @@
-services:
-  - type: worker
-    name: DThree
-    env: python
-    repo: https://github.com/mrdau4096/DThree-Source
-    branch: main
-    buildCommand: ""
-    startCommand: python DThree.py
-    autoDeploy: true
