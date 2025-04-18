@@ -23,7 +23,7 @@ async def choiceCommand(messageData, message, fileName, imgFile=None):
 		previousChoices[fileName] = []
 
 	if messageData. startswith(f"/{fileName}"):
-		with open(f"textFiles/phrases/{fileName}.txt", "r", encoding="utf-8") as file:
+		with open(f"/opt/render/project/src/textFiles/phrases/{fileName}.txt", "r", encoding="utf-8") as file:
 			fileData = file.readlines()
 			fileData = [line.strip() for line in fileData]
 			if imgFile is not None:
@@ -412,12 +412,12 @@ async def checkReplies(messageData, message):
 
 
 	#Reply to command messages
-	with open("textFiles/cmds.txt", "r") as cmdFile:
+	with open("/opt/render/project/src/textFiles/cmds.txt", "r") as cmdFile:
 		commands = cmdFile.readlines()
 	for cmd in commands:
 		if cmd == "vibe":
 			if messageData.startswith("/vibe list"):
-				with open(f"textFiles/phrases/vibe.txt", "r", encoding="utf-8") as file:
+				with open(f"/opt/render/project/src/textFiles/phrases/vibe.txt", "r", encoding="utf-8") as file:
 					fileData = file.readlines()
 					vibeList = ''.join(["- "+vibe.split("¬")[0]+"\n" for vibe in fileData])
 					await replyMessage(message, vibeList, ping=True)
@@ -445,7 +445,7 @@ async def checkReplies(messageData, message):
 		return
 
 	fishes = []
-	with open(r"textFiles/phrases/fish.txt", "r") as fishFile:
+	with open(r"/opt/render/project/src/textFiles/phrases/fish.txt", "r") as fishFile:
 		rawFishes = fishFile.readlines()
 		for fish in rawFishes:
 			if fish != "":
@@ -459,7 +459,7 @@ async def checkReplies(messageData, message):
 		if not any([skipWord in messageData for skipWord in skippedWords]):
 			fish_updateOccurrences(str(message.author), "fish")
 
-			with open("textFiles/phrases/fishLanguages.txt", encoding="utf-8") as fishFile: fishChoices = fishFile.readlines()
+			with open("/opt/render/project/src/textFiles/phrases/fishLanguages.txt", encoding="utf-8") as fishFile: fishChoices = fishFile.readlines()
 			await replyMessage(message, random.choice(fishChoices).upper().strip(), ping=True)
 			
 
