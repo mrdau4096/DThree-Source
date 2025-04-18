@@ -31,7 +31,7 @@ async def browseMemes(userDisplayName, messageData, message):
 	currentDir = userDirs[userID]
 
 	if messageData.startswith("/browse"):
-		folder = messageData.replace("/browse", "").strip()
+		folder = messageData.replace("/browse", "").strip().capitalize()
 
 		if folder == "current" or not folder:
 			folders = [f for f in os.listdir(currentDir) if os.path.isdir(os.path.join(currentDir, f))]
