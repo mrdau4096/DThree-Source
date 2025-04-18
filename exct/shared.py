@@ -23,7 +23,7 @@ async def sendMessage(message, messageText):
 
 	await message.channel.send(messageText)
 
-async def replyMessage(message, messageText, ping=False):
+async def replyMessage(message, messageText, ping=True):
 	with open("data/log.txt", "a", encoding="utf-8") as logFile:
 		if "*An error occurred;*" not in messageText:
 			logFile.write("\n" + f"{getTime()} // {message.guild} // REPLY {message.author} // {messageText.strip()}")

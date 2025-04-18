@@ -18,6 +18,22 @@ supportedExtensions = (
 	".webm",
 	".webp"
 )
+commonMistakes = {
+	"Edit": "Edits",
+	"Game": "Games",
+	"Misc": "Miscellaneous", "Miscelaneous": "Miscellaneous",
+	"Titanfall": "TitanFall", "Titan fall": "TitanFall", "Titan": "TitanFall",
+	"Valve": "VALVe",
+	"War thunder": "War Thunder", "Wt": "War Thunder",
+	"Half life": "Half Life", "Hl": "Half Life",
+	"Left 4 dead": "Left 4 Dead", "L4d": "Left 4 Dead",
+	"Other or mixed": "Other OR Mixed", "Mixed": "Other OR Mixed",
+	"Tf2": "Team Fort the Second", "Team fortress 2": "Team Fort the Second", "Team Fortress": "Team Fort the Second",
+	"Hl1 or bm": "HL1 OR BM", "Half life 1": "HL1 OR BM", "Black mesa": "HL1 OR BM",
+	"Hl2": "HL2", "Half life 2": "HL2",
+	"Virtual end": "In the Virtual End", "In the virtual end": "In the Virtual End", "Virtual": "In the Virtual End"
+	"History or combat": "History OR Combat", "History": "History OR Combat", "Combat": "History OR Combat",
+}
 
 async def browseMemes(userDisplayName, messageData, message):
 	global userDirs, initialDirs, supportedExtensions, defaultPath
@@ -25,33 +41,40 @@ async def browseMemes(userDisplayName, messageData, message):
 	userID = message.author.id
 
 	if userID not in userDirs:
-		initialDirs[userID] = defaultPath  # Replace with your initial directory
+		initialDirs[userID] = defaultPath
 		userDirs[userID] = initialDirs[userID]
 
 	currentDir = userDirs[userID]
 
-	if messageData.startswith("/browse"):
-		folder = message.content.replace("/browse", "").strip().capitalize()
+	if messageData.startswith("/commonMistakes"):
+		reply = "Frequent mistakes and their corrections:\n"
+		for key, data in commonMistakes.items():
+			reply += f"{key} -> {data}\n"
+		replyMessage(message, reply)
+
+	elif messageData.startswith("/browse"):
+		folder = message.content.replace("/browse", "").strip().lower().capitalize()
+		if folder in list(commonMistakes.keys()):
+			folder = commonMistakes[folder]
 
 		if folder == "current" or not folder:
 			folders = [f for f in os.listdir(currentDir) if os.path.isdir(os.path.join(currentDir, f))]
 
 			displayDir = currentDir.replace(defaultPath, "..")
 			if folders:
-				await sendMessage(message, f"**Folders in {displayDir}:**\n" + "\n".join(folders))
+				await replyMessage(message, f"**Folders in {displayDir}:**\n" + "\n".join(folders))
 			else:
-				await sendMessage(message, f"No subfolders in {displayDir}. Type `/browse` to search for media.")
+				await replyMessage(message, f"No subfolders in {displayDir}. Type `/browse` to search for media.")
 		else:
-			#Create dict of common typos?
 			newDir = os.path.join(currentDir, folder)
 			if os.path.isdir(newDir):
 				userDirs[userID] = newDir
 				displayDir = newDir.replace(defaultPath, "..")
-				await sendMessage(message, f"Changed directory to: {displayDir}")
+				await replyMessage(message, f"Changed directory to: {displayDir}")
 
 				subfolders = [f for f in os.listdir(newDir) if os.path.isdir(os.path.join(newDir, f))]
 				if subfolders:
-					await sendMessage(message, f"**Subfolders in {displayDir}:**\n" + "\n".join(subfolders))
+					await replyMessage(message, f"**Subfolders in {displayDir}:**\n" + "\n".join(subfolders))
 				else:
 					files = [f for f in os.listdir(newDir) if f.lower().endswith(supportedExtensions)]
 					if files:
@@ -66,31 +89,31 @@ async def browseMemes(userDisplayName, messageData, message):
 								break
 							randomFile = random.choice(files)
 						userDirs[userID] = newDir
-						await sendMessage(message, f"Sending random file {randomFile} // {files.index(randomFile)+1} of {len(files)};\n-# *Use `/again` to send another random meme from this directory*")
+						await replyMessage(message, f"Sending random file {randomFile} // {files.index(randomFile)+1} of {len(files)};\n-# *Use `/again` to send another random meme from this directory*")
 						await message.channel.send(file=discord.File(os.path.join(newDir, randomFile)))
 					else:
-						await sendMessage(message, "No images or videos found in this directory.")
+						await replyMessage(message, "No images or videos found in this directory.")
 			else:
 				displayDir = currentDir.replace(defaultPath, "..")
-				await sendMessage(message, f"Folder '{folder}' not found in {displayDir}.")
+				await replyMessage(message, f"Folder '{folder}' not found in {displayDir}.")
 
 	elif messageData.startswith("/back"):
 		if currentDir != initialDirs[userID]:
 			parentDir = os.path.dirname(currentDir)
 			if parentDir.startswith(initialDirs[userID]):
 				userDirs[userID] = parentDir
-				await sendMessage(message, f"Moved back to: {parentDir}")
+				await replyMessage(message, f"Moved back to: {parentDir}")
 
 				# List folders in the parent directory
 				folders = [f for f in os.listdir(parentDir) if os.path.isdir(os.path.join(parentDir, f))]
 				if folders:
-					await sendMessage(message, f"**Folders in {parentDir.replace(defaultPath, '..')}:**\n" + "\n".join(folders))
+					await replyMessage(message, f"**Folders in {parentDir.replace(defaultPath, '..')}:**\n" + "\n".join(folders))
 				else:
-					await sendMessage(message, f"No subfolders in {parentDir.replace(defaultPath, '..')}.")
+					await replyMessage(message, f"No subfolders in {parentDir.replace(defaultPath, '..')}.")
 			else:
-				await sendMessage(message, "Cannot go back past the initial directory.")
+				await replyMessage(message, "Cannot go back past the initial directory.")
 		else:
-			await sendMessage(message, "You are already in the initial directory. Cannot go back further.")
+			await replyMessage(message, "You are already in the initial directory. Cannot go back further.")
 
 	elif messageData.startswith("/again"):
 		if userID in userDirs:
@@ -110,9 +133,9 @@ async def browseMemes(userDisplayName, messageData, message):
 
 				prevFiles[message.author].append(randomFile)
 
-				await sendMessage(message, f"Sending another random file {randomFile} // {files.index(randomFile)+1} of {len(files)};\n-# *Use `/again` to send another random meme from this directory*")
+				await replyMessage(message, f"Sending another random file {randomFile} // {files.index(randomFile)+1} of {len(files)};\n-# *Use `/again` to send another random meme from this directory*")
 				await message.channel.send(file=discord.File(os.path.join(lastDir, randomFile)))
 			else:
-				await sendMessage(message, "No images or videos found in the last directory.")
+				await replyMessage(message, "No images or videos found in the last directory.")
 		else:
-			await sendMessage(message, "No directory history found. Please browse to a folder first.")
+			await replyMessage(message, "No directory history found. Please browse to a folder first.")
