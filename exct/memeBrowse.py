@@ -49,6 +49,7 @@ async def browseMemes(userDisplayName, messageData, message):
 	if messageData.startswith("/commonMistakes"):
 		reply = "Frequent mistakes and their corrections:\n"
 		for key, data in commonMistakes.items():
+			if (key.lower()) == (data.lower()): continue
 			reply += f"{key} -> {data}\n"
 		replyMessage(message, reply)
 
