@@ -46,7 +46,7 @@ async def browseMemes(userDisplayName, messageData, message):
 
 	currentDir = userDirs[userID]
 
-	if messageData.startswith("/commonMistakes"):
+	if messageData.startswith("/commonmistakes") or messageData.startswith("/common-mistakes"):
 		reply = "Frequent mistakes and their corrections:\n"
 		for key, data in commonMistakes.items():
 			if (key.lower()) == (data.lower()): continue
