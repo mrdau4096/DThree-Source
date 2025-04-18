@@ -53,10 +53,10 @@ async def recieveData(payload: dict, auth: str=Depends(verifyToken)):
 	try:
 		cmd = data.split("|")[0]
 		if cmd not in funcMap:
-		raise HTTPException(
-				status_code=status.HTTP_400_BAD_REQUEST,
-				detail=f"Invalid command '{cmd}'"
-			)
+			raise HTTPException(
+					status_code=status.HTTP_400_BAD_REQUEST,
+					detail=f"Invalid command '{cmd}'"
+				)
 		result = await funcMap[cmd](data.replace(cmd + "|", ""))
 		reply["message"] = result if result is not None else "Success"
 	except Exception as err:
