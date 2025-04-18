@@ -1,11 +1,16 @@
-import discord, asyncio, random, importlib, os, subprocess, datetime, time
+import discord, asyncio, random, importlib, os, subprocess, datetime, time, threading
+from fastapi import FastAPI
 from games.chess import checkChessGames, testImage
 from games.noughtsAndCrosses import checkNoughtsAndCrossesGames
 from exct.responses import checkReplies
 from exct.memeBrowse import browseMemes
 from exct.webSearch import lookUp
-from exct.shared import removeNonASCII, getTime, updateRepo, sendMessage, replyMessage
+from exct.shared import removeNonASCII, getTime, updateRepo, sendMessage, replyMessage, backupData
+from exct.http import verifyToken
 import games.economy
+
+app = FastAPI()
+exct.http.app = app
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -13,6 +18,7 @@ intents.members = True
 intents.guilds = True
 intents.presences = True
 client = discord.Client(intents=intents)
+exct.http.client = client
 
 gameSuffixes = ("o&x", "n&c", "ttt", "tictactoe", "noughtsandcrosses", "chess")
 
@@ -139,28 +145,10 @@ async def on_message(message):
 
 
 
-def backupData():
-	githubToken = os.getenv("GITHUB_TOKEN")
-	url = f"https://{githubToken}@github.com/mrdau4096/DThree-Data-Backups.git"
-	cloneDir = "data-backups"
-
-	subprocess.run(["git", "clone", url, cloneDir])
-	subprocess.run(["cp", "-r", "data/", os.path.join(cloneDir, "data")])
-
-	subprocess.run(["git", "-C", cloneDir, "config", "user.email", "d3@render.com"])
-	subprocess.run(["git", "-C", cloneDir, "config", "user.name", "DThree"])
-
-
-	subprocess.run(["git", "-C", cloneDir, "add", "."])
-	subprocess.run(["git", "-C", cloneDir, "commit", "-m", f"{datetime.datetime.now()}"])
-	subprocess.run(["git", "-C", cloneDir, "branch", "-M", "main"])
-	subprocess.run(["git", "-C", cloneDir, "push", "-u", "origin", "main"])
-
 
 async def backgroundActions(client):
 	D3StartTime = time.time()
 	while True:
-		#await updateRepo() #Update textfiles repo.
 		backupData() #Backup /data/
 		await asyncio.sleep(3600) #60*60, 1 hour.
 
@@ -168,14 +156,16 @@ async def backgroundActions(client):
 
 
 
-# Load and run the bot with the token
-token = os.getenv("BOT_TOKEN")
-
 async def main(token):
 	bgTask = asyncio.create_task(backgroundActions(client))
 	DThreeTask = asyncio.create_task(client.start(token))
 	await asyncio.gather(bgTask, DThreeTask)
 
-# Start everything
-if __name__ == "__main__":
-	asyncio.run(main(token))
+
+@app.on_event("startup")
+async def startupEvent():
+	def runBot():
+		token = os.getenv("BOT_TOKEN")
+		asyncio.run(main(token))
+
+	threading.Thread(target=runBot, daemon=True).start()

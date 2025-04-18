@@ -2,10 +2,10 @@ import discord, datetime, os, subprocess
 
 def getTime(dateOnly=False):
 	#Gets current date/time, returns as a nicely formatted string.
-	FULL_TIME = str(datetime.datetime.now())
-	UNFORMATTED_DATE, TIME = FULL_TIME[:10], FULL_TIME[11:-7]
-	DATE = f"{UNFORMATTED_DATE[8:]}-{UNFORMATTED_DATE[5:7]}-{UNFORMATTED_DATE[:4]}"
-	return f"{TIME}, {DATE}" if not dateOnly else DATE
+	fullTime = str(datetime.datetime.now())
+	unformattedDate, time = fullTime[:10], fullTime[11:-7]
+	date = f"{unformattedDate[8:]}-{unformattedDate[5:7]}-{unformattedDate[:4]}"
+	return f"{time}, {date}" if not dateOnly else date
 
 def formatNumber(num, seperator=",", delimiter="."):
 	formatted = ""
@@ -43,3 +43,21 @@ async def updateRepo(message=None):
 
 def removeNonASCII(text):
 	return ''.join(char for char in text if ord(char) < 128)
+
+
+def backupData():
+	githubToken = os.getenv("GITHUB_TOKEN")
+	url = f"https://{githubToken}@github.com/mrdau4096/DThree-Data-Backups.git"
+	cloneDir = "data-backups"
+
+	subprocess.run(["git", "clone", url, cloneDir])
+	subprocess.run(["cp", "-r", "data/", os.path.join(cloneDir, "data")])
+
+	subprocess.run(["git", "-C", cloneDir, "config", "user.email", "d3@render.com"])
+	subprocess.run(["git", "-C", cloneDir, "config", "user.name", "DThree"])
+
+
+	subprocess.run(["git", "-C", cloneDir, "add", "."])
+	subprocess.run(["git", "-C", cloneDir, "commit", "-m", f"{datetime.datetime.now()}"])
+	subprocess.run(["git", "-C", cloneDir, "branch", "-M", "main"])
+	subprocess.run(["git", "-C", cloneDir, "push", "-u", "origin", "main"])

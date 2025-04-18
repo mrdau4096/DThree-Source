@@ -5,3 +5,4 @@ numpy
 aioconsole
 duckduckgo-search
 pygame
+fastapi
