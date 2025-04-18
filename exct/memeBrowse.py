@@ -72,7 +72,7 @@ async def browseMemes(userDisplayName, messageData, message):
 						await sendMessage(message, "No images or videos found in this directory.")
 			else:
 				displayDir = currentDir.replace(defaultPath, "..")
-				await sendMessage(message, f"Folder '{folder}' not found in {currentDir}   {newDir}.")
+				await sendMessage(message, f"Folder '{folder}' not found in {displayDir}.")
 
 	elif messageData.startswith("/back"):
 		if currentDir != initialDirs[userID]:
