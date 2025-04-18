@@ -1,8 +1,9 @@
-from fastapi import Depends, HTTPException, Header, status
+from fastapi import Depends, HTTPException, Header, status, APIrouter
 from exct.shared import sendMessage, replyMessage, updateRepo, backupData
 import os
 
-global app, client
+global router, client
+router = APIRouter()
 
 
 
@@ -28,14 +29,14 @@ async def uptime(data):
 
 
 
-@app.get("/")
+@router.get("/")
 async def root():
 	return {
 		"message": "DThree is online."
 	}
 
 
-@app.get("/message")
+@router.get("/message")
 async def recieveData(payload: dict, auth: str=Depends(verifyToken)):
 	data = payload.get("content", "")
 	reply = {

@@ -1,16 +1,16 @@
 import discord, asyncio, random, importlib, os, subprocess, datetime, time, threading
-from fastapi import FastAPI
+from fastapi import FastAPI, APIrouter
 from games.chess import checkChessGames, testImage
 from games.noughtsAndCrosses import checkNoughtsAndCrossesGames
 from exct.responses import checkReplies
 from exct.memeBrowse import browseMemes
 from exct.webSearch import lookUp
 from exct.shared import removeNonASCII, getTime, updateRepo, sendMessage, replyMessage, backupData
-from exct.http import verifyToken
+from exct.http import verifyToken, router
 import games.economy
 
 app = FastAPI()
-exct.http.app = app
+app.include_router(router)
 
 intents = discord.Intents.default()
 intents.message_content = True
