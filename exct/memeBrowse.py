@@ -31,7 +31,7 @@ async def browseMemes(userDisplayName, messageData, message):
 	currentDir = userDirs[userID]
 
 	if messageData.startswith("/browse"):
-		folder = messageData.replace("/browse", "").strip().capitalize()
+		folder = message.content.replace("/browse", "").strip().capitalize()
 
 		if folder == "current" or not folder:
 			folders = [f for f in os.listdir(currentDir) if os.path.isdir(os.path.join(currentDir, f))]
@@ -42,6 +42,7 @@ async def browseMemes(userDisplayName, messageData, message):
 			else:
 				await sendMessage(message, f"No subfolders in {displayDir}. Type `/browse` to search for media.")
 		else:
+			#Create dict of common typos?
 			newDir = os.path.join(currentDir, folder)
 			if os.path.isdir(newDir):
 				userDirs[userID] = newDir
