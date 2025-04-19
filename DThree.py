@@ -1,5 +1,6 @@
 import discord, asyncio, random, importlib, os, subprocess, datetime, time, threading
 from fastapi import FastAPI, APIRouter
+from contextlib import asynccontextmanager
 from games.chess import checkChessGames, testImage
 from games.noughtsAndCrosses import checkNoughtsAndCrossesGames
 from exct.responses import checkReplies
