@@ -6,6 +6,7 @@ global router, client
 router = APIRouter()
 
 def setClient(clientExtern):
+	global client
 	client = clientExtern
 
 
