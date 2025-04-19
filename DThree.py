@@ -6,6 +6,7 @@ from exct.responses import checkReplies
 from exct.memeBrowse import browseMemes
 from exct.webSearch import lookUp
 from exct.shared import removeNonASCII, getTime, updateRepo, sendMessage, replyMessage, backupData
+import exct.http
 from exct.http import verifyToken, router
 import games.economy
 
@@ -18,7 +19,7 @@ intents.members = True
 intents.guilds = True
 intents.presences = True
 client = discord.Client(intents=intents)
-exct.http.client = client
+http.client = client
 
 gameSuffixes = ("o&x", "n&c", "ttt", "tictactoe", "noughtsandcrosses", "chess")
 
