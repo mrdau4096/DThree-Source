@@ -21,7 +21,9 @@ def verifyToken(authorization: str = Header(None, convert_underscores=False)):
 
 
 async def echo(data):
-	print("Echo")
+	serverName, channelName, text = data.split("|")
+	channel = discord.utils.get(client.get_all_channels(), guild__name=serverName, name=channelName)
+	await channel.send(text)
 	pass #Implement later.
 
 
