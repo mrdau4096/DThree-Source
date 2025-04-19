@@ -1,6 +1,6 @@
 from fastapi import Depends, HTTPException, Header, status, APIRouter
 from exct.shared import sendMessage, replyMessage, updateRepo, backupData
-import os
+import os, discord
 
 global router, client
 router = APIRouter()
@@ -24,7 +24,6 @@ async def echo(data):
 	serverName, channelName, text = data.split("|")
 	channel = discord.utils.get(client.get_all_channels(), guild__name=serverName, name=channelName)
 	await channel.send(text)
-	pass #Implement later.
 
 
 async def uptime(data):
