@@ -9,8 +9,6 @@ from exct.shared import removeNonASCII, getTime, updateRepo, sendMessage, replyM
 from exct.http import verifyToken, router, setClient
 import games.economy
 
-app = FastAPI()
-app.include_router(router)
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -162,6 +160,21 @@ async def main(token):
 	await asyncio.gather(bgTask, DThreeTask)
 
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    def runBot():
+        token = os.getenv("BOT_TOKEN")
+        asyncio.run(main(token))
+
+    threading.Thread(target=runBot, daemon=True).start()
+    
+    yield
+
+
+    await client.close()
+    writeCSV("data/econ.csv")
+
+
 @app.on_event("startup")
 async def startupEvent():
 	def runBot():
@@ -169,3 +182,8 @@ async def startupEvent():
 		asyncio.run(main(token))
 
 	threading.Thread(target=runBot, daemon=True).start()
+
+
+
+app = FastAPI(lifespan=lifespan)
+app.include_router(router)
