@@ -176,15 +176,6 @@ async def lifespan(app: FastAPI):
     writeCSV("data/econ.csv")
 
 
-@app.on_event("startup")
-async def startupEvent():
-	def runBot():
-		token = os.getenv("BOT_TOKEN")
-		asyncio.run(main(token))
-
-	threading.Thread(target=runBot, daemon=True).start()
-
-
 
 app = FastAPI(lifespan=lifespan)
 app.include_router(router)
