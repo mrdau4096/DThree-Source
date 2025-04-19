@@ -66,7 +66,7 @@ async def recieveData(payload: dict, auth: str=Depends(verifyToken)):
 		result = await funcMap[cmd](data.replace(cmd + "|", ""))
 		reply["message"] = result if result is not None else "Success"
 	except Exception as err:
-		reply["message"] = "Faliure: " + err
+		reply["message"] = f"Faliure: {err}"
 
 
 	return reply
