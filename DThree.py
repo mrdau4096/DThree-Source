@@ -147,6 +147,7 @@ async def onMessage(message):
 
 async def backgroundActions(client):
 	D3StartTime = time.time()
+	setStartTime(D3StartTime)
 
 	channelDict = {}
 	for guild in client.guilds:

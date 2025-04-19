@@ -1,4 +1,5 @@
 import discord
+import numpy as np
 import math as maths
 import random, time
 import csv, json
@@ -265,10 +266,10 @@ def rowToCompany(row):
 
 
 
-def readCSV(file_path):
+def readCSV(filePath):
 	global companies
 	companies = {}
-	with open(file_path, mode="r") as file:
+	with open(filePath, mode="r") as file:
 		reader = csv.DictReader(file)
 		for row in reader:
 			rowToCompany(row)
@@ -276,22 +277,29 @@ def readCSV(file_path):
 
 
 
-def writeCSV(file_path):
+def writeCSV(filePath, altData: dict=None):
 	global companies
-	with open(file_path, mode="w", newline="") as file:
+	dataSet = companies if altData is None else altData
+	with open(filePath, mode="w", newline="") as file:
 		fieldnames = ["owner", "name", "balance", "assets", "debts", "loans", "age", "currency", "real"]
 		writer = csv.DictWriter(file, fieldnames=fieldnames)
 		writer.writeheader()
-		for user, company in companies.items():
+		for user, company in dataSet.items():
 			writer.writerow(company.toRow())
 
 
 
-def createFakeCompany():
-	fakeCEOName = f"_{round(time.time()*1000)}"
-	with open("textFiles/fakeCompanyNames.txt", "r") as nameFile:
-		randomName = random.choice(nameFile.readlines())
-	fakeCompany = Company(fakeCEOName, randomName.strip())
+def createFakeCompany(optionalName="", optionalCEO=""):
+	if optionalCEO != "":
+		fakeCEOName = optionalCEO
+	else:
+		fakeCEOName = f"_{round(time.time()*1000)}"
+	if optionalName != "":
+		chosenName = optionalName
+	else:
+		with open("textFiles/fakeCompanyNames.txt", "r") as nameFile:
+			chosenName = random.choice(nameFile.readlines())
+	fakeCompany = Company(fakeCEOName, chosenName.strip())
 
 	rand1 = random.randint(-5000,250000)
 	fakeCompany.balance += rand1
@@ -324,31 +332,32 @@ def createFakeCompany():
 
 def forceUnBusyFunc():
 	global busy
-	print(f"ECON Is currently {'Busy' if busy else 'Not Busy'}, set to Not Busy")
+	oldState = busy
 	busy = False
+	return f"ECON is currently {'' if oldState else 'Not'} Busy, set to Not Busy"
 
 
 def grantMoney(who, amount, ceo=True, company=False):
 	global companies
-	if ceo and who in list(companies.keys()):
+	if ceo and np.any([(who.lower() == owner.lower()) for owner in companies.keys()]):
 		companies[who].balance += amount
 		companies[who].equity += amount
-		print(f"Granted {companies[who].name} {companies[who].currency.format(amount)}.")
+		return f"Granted {companies[who].name} {companies[who].currency.format(amount)}."
 	elif company:
 		found = False
 		for ceo, thisCompany in companies:
-			if thisCompany.name.lower() == who:
+			if thisCompany.name.lower() == who.lower():
 				thisCompany.balance += amount
 				thisCompany.equity += amount
 				found = True
-				print(f"Granted {thisCompany.name} {thisCompany.currency.format(amount)}.")
+				return f"Granted {thisCompany.name} {thisCompany.currency.format(amount)}."
 
 		if not found:
-			print(f"Could not find company called {who}")
+			return f"Could not find company called {who}"
 	elif not (ceo or company):
-		print(f"Unknown: {who}")
+		return f"Unknown: {who}"
 	else:
-		print(f"Could not find user called {who}")
+		return f"Could not find user called {who}"
 
 
 
