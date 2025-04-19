@@ -1,5 +1,14 @@
 import discord, datetime, os, subprocess
 
+global channelDict
+channelDict = {}
+
+
+def addChannelDict(newDict):
+	global channelDict
+	channelDict = newDict
+
+
 def getTime(dateOnly=False):
 	#Gets current date/time, returns as a nicely formatted string.
 	fullTime = str(datetime.datetime.now())

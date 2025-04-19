@@ -1,13 +1,11 @@
 from fastapi import Depends, HTTPException, Header, status, APIRouter
-from exct.shared import sendMessage, replyMessage, updateRepo, backupData
+from exct.shared import sendMessage, replyMessage, updateRepo, backupData, channelDict
 import os, discord
+import asyncio
 
-global router, client
+global router
 router = APIRouter()
 
-def setClient(clientExtern):
-	global client
-	client = clientExtern
 
 
 
@@ -21,15 +19,10 @@ def verifyToken(authorization: str = Header(None, convert_underscores=False)):
 
 
 
-async def echo(data):
-	serverName, channelName, text = data.split("|")
-	channel = discord.utils.get(client.get_all_channels(), guild__name=serverName, name=channelName)
-	await channel.send(text)
-
 
 async def uptime(data):
 	print("Uptime")
-	pass #Implement later.1
+	pass #Implement later.
 
 
 
@@ -51,7 +44,6 @@ async def recieveData(payload: dict, auth: str=Depends(verifyToken)):
 	}
 
 	funcMap = {
-		"echo": echo,
 		"update-repo": updateRepo,
 		"backup-data": backupData,
 		"uptime": uptime,

@@ -54,6 +54,14 @@ async def browseMemes(userDisplayName, messageData, message):
 		await replyMessage(message, reply)
 
 	elif messageData.startswith("/browse"):
+		#DThree-Web cannot access files currently.
+		await replyMessage(message, "DThree is currently on the testing branch; /browse will not work for the meantime.")
+		return
+
+
+
+
+
 		folder = message.content.replace("/browse", "").strip().lower().capitalize()
 		if folder in list(commonMistakes.keys()):
 			folder = commonMistakes[folder]

@@ -6,7 +6,7 @@ from games.noughtsAndCrosses import checkNoughtsAndCrossesGames
 from exct.responses import checkReplies
 from exct.memeBrowse import browseMemes
 from exct.webSearch import lookUp
-from exct.shared import removeNonASCII, getTime, updateRepo, sendMessage, replyMessage, backupData
+from exct.shared import removeNonASCII, getTime, updateRepo, sendMessage, replyMessage, backupData, addChannelDict
 from exct.http import verifyToken, router, setClient
 import games.economy
 
@@ -147,6 +147,16 @@ async def onMessage(message):
 
 async def backgroundActions(client):
 	D3StartTime = time.time()
+
+	channelDict = {}
+	for guild in client.guilds:
+		channelDict[guild.name] = {
+			"channels": list(guild.text_channels),
+			"guild": guild
+		}
+
+	addChannelDict(channelDict)
+
 	while True:
 		backupData() #Backup /data/
 		await asyncio.sleep(3600) #60*60, 1 hour.
