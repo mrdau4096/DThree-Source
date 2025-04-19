@@ -11,8 +11,8 @@ def setClient(clientExtern):
 
 
 
-def verifyToken(Authorisation: str=Header(None)):
-	if authorisation != f"Bearer {os.getenv('HTTP_AUTH_CODE')}":
+def verifyToken(authorization: str = Header(None, convert_underscores=False)):
+	if authorization != f"Bearer {os.getenv('HTTP_AUTH_CODE')}":
 		raise HTTPException(
 			status_code=status.HTTP_401_UNAUTHORIZED,
 			detail="Invalid or missing authentication token."
