@@ -21,10 +21,12 @@ def verifyToken(authorisation: str=Header(None)):
 
 
 async def echo(data):
+	print("Echo")
 	pass #Implement later.
 
 
 async def uptime(data):
+	print("Uptime")
 	pass #Implement later.1
 
 
@@ -42,6 +44,7 @@ async def root():
 @router.get("/message")
 async def recieveData(payload: dict, auth: str=Depends(verifyToken)):
 	data = payload.get("content", "")
+	print(data)
 	reply = {
 		"message": ""
 	}
@@ -62,6 +65,7 @@ async def recieveData(payload: dict, auth: str=Depends(verifyToken)):
 					detail=f"Invalid command '{cmd}'"
 				)
 		result = await funcMap[cmd](data.replace(cmd + "|", ""))
+		print(cmd, result)
 		reply["message"] = result if result is not None else "Success"
 	except Exception as err:
 		reply["message"] = "Faliure: " + err
