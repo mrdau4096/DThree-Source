@@ -25,8 +25,8 @@ gameSuffixes = ("o&x", "n&c", "ttt", "tictactoe", "noughtsandcrosses", "chess")
 
 
 @client.event
-async def on_ready():
-	print(f"\rSigned in as user: {client.user}\nPlease input a command;\n> ", end="")
+async def onReady():
+	print(f"\rSigned in as user: {client.user}")
 
 
 async def otherTasks(message, messageData, userDisplayName):
@@ -131,7 +131,7 @@ async def otherTasks(message, messageData, userDisplayName):
 
 
 @client.event
-async def on_message(message):
+async def onMessage(message):
 	if message.author == client.user:
 		return
 	try:
