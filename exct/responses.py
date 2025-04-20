@@ -474,10 +474,13 @@ async def checkReplies(messageData, message):
 		await message.channel.send(file=discord.File("imgs/graph.png"))
 
 
+	#Temporarily remove due to annoyance
+	"""
 	elif ("america" in messageData):
 		await sendMessage(message, "RAHHH AMERICA MENTIONED :flag_us: :flag_us: :flag_us: :eagle: :eagle:")
 	elif ("murica" in messageData):
 		await sendMessage(message, "RAHHH 'MURICA MENTIONED :flag_us: :flag_us: :flag_us: :eagle: :eagle:")
+	"""
 	elif ("canada" in messageData):
 		await sendMessage(message, "Eh?")
 	elif ("england" in messageData) or ("britain" in messageData):
