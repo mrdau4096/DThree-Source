@@ -82,7 +82,7 @@ def removeNonASCII(text):
 
 
 
-def sendMessageInChannel(client, text, guild, channel):
+async def sendMessageInChannel(client, text, guild, channel):
 	guildList = dict([(g.name, g) for g in client.guilds])
 	guild = guildList[guild]
 
@@ -91,7 +91,7 @@ def sendMessageInChannel(client, text, guild, channel):
 		channel = list(channelList.values())[channel]
 
 		if channel is not None:
-			await channel.send(text)
+			await channel.send(text) #Ping Dau#7446
 		else:
 			raise ValueError("Invalid Channel")
 

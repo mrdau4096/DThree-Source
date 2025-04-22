@@ -213,7 +213,7 @@ async def backgroundActions(client):
 			await asyncio.sleep(3600) #60*60, 1 hour.
 			backupData() #Backup /project/src/disk/data/
 	except Exception as e:
-		sendMessageInChannel(
+		await sendMessageInChannel(
 			client,
 			f"# Error occurred in background actions: {e}\n-# @663451560465924097",
 			"Dau's Repository",
@@ -221,11 +221,11 @@ async def backgroundActions(client):
 		)
 
 
-def handleShutdown(signum, frame):
+async def handleShutdown(signum, frame):
 	global client
 
 	#Warn of shutdown.
-	sendMessageInChannel(client, "Shutdown imminent; Either redeploy or manual termination.", "Dau's Repository", "dthree-space")
+	await sendMessageInChannel(client, "Shutdown imminent; Either redeploy or manual termination.", "Dau's Repository", "dthree-space")
 
 	sys.exit(0)
 
