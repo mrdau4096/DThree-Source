@@ -6,9 +6,11 @@ from games.noughtsAndCrosses import checkNoughtsAndCrossesGames
 from exct.responses import checkReplies
 from exct.memeBrowse import browseMemes
 from exct.webSearch import lookUp
-from exct.shared import removeNonASCII, getTime, updateRepo, sendMessage, replyMessage, backupData, addChannelDict
+from exct.shared import removeNonASCII, getTime, updateRepo, sendMessage, replyMessage, backupData, addChannelDict, timeSinceStr
 from exct.http import verifyToken, router, setClient
 import games.economy
+
+global D3StartTime
 
 
 intents = discord.Intents.default()
@@ -128,6 +130,30 @@ async def otherTasks(message, messageData, userDisplayName):
 	elif messageData.startswith("/econ force-reload"):
 		importlib.reload(games.economy)
 
+	elif messageData.startswith("/uptime"):
+		currentTime = time.time()
+		uptime = currentTime - D3StartTime
+
+
+		days = uptime // 84600 % 365
+		hours = uptime // 3600 % 24
+		minutes = uptime // 60 % 60
+		seconds = uptime % 60
+		uptimeStr = ""
+		if days > 0:
+			uptimeStr += f"{days} days, "
+		if hours > 0 or days > 0:
+			uptimeStr += f"{hours} hours, "
+		if minutes > 0 or hours > 0 or days > 0:
+			uptimeStr += f"{minutes} minutes "
+		uptimeStr += f"{seconds} seconds."
+
+
+		timeSinceCreationStr = timeSinceStr("2024-09-01 12:00:00")
+
+		await replyMessage(message, f"DThree has been deployed for: {uptimeStr}\nTime since DThree was created: {timeSinceCreationStr}", ping=True)
+
+
 
 @client.event
 async def onMessage(message):
@@ -146,6 +172,7 @@ async def onMessage(message):
 
 
 async def backgroundActions(client):
+	global D3StartTime
 	D3StartTime = time.time()
 	setStartTime(D3StartTime)
 
