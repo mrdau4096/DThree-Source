@@ -14,6 +14,8 @@ intents.guilds = True
 intents.presences = True
 client = discord.Client(intents=intents)
 
+
+global D3StartTime
 gameSuffixes = ("o&x", "n&c", "ttt", "tictactoe", "noughtsandcrosses", "chess")
 
 
@@ -24,6 +26,7 @@ async def on_ready():
 
 
 async def otherTasks(message, messageData, userDisplayName):
+	global D3StartTime
 	"""Handles all other asynchronous tasks."""
 	with open("data/wordsSinceSpanishInquisition.txt", "r") as spainFile:
 		wordsSinceSpanishInquisition = int(spainFile.readlines()[0].strip())
@@ -191,6 +194,7 @@ def backupData():
 
 
 async def backgroundActions(client):
+	global D3StartTime
 	D3StartTime = time.time()
 	while True:
 		backupData() #Backup /data/
