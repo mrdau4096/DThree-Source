@@ -193,6 +193,33 @@ class Vehicle:
 
 
 
+class Aircraft: #, I'm not sure this is even right. I just copied the vehicle one and slightly adapted it.
+	def __init__(self, ceo, price, new=True):
+		company = companies[ceo]
+		if new:
+			if company.balance < price:
+				raise NotEnoughMoneyException(f"Balance: {company.currency.format(company.balance)} < Cost: {company.currency.format(price)}")
+			company.balance -= price
+		self.ownedBy = company.owner
+		self.value = price
+		self.age = 0
+		company.assets.append(self)
+		company.equity += self.value
+
+	def __repr__(self):
+		return f"<Aircraft: [OWNER: {self.ownedBy}, VALUE: {self.value}, AGE: {self.age}yrs]"
+
+	def format(self):
+		company = companies[self.ownedBy]
+		return f"Plane worth {company.currency.format(self.value)} that is {self.age} Year{'s' if self.age != 1 else ''} old."
+
+	def sell(self, refund=True):
+		company = companies[self.ownedBy]
+		company.assets.remove(self)
+		if refund: company.balance += self.value
+
+
+
 class Company:
 	def __init__(self, user, name, real=False):
 		self.owner = user
