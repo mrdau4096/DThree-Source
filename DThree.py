@@ -4,7 +4,7 @@ from games.noughtsAndCrosses import checkNoughtsAndCrossesGames
 from exct.responses import checkReplies
 from exct.memeBrowse import browseMemes
 from exct.webSearch import lookUp
-from exct.shared import removeNonASCII, getTime, updateRepo, sendMessage, replyMessage
+from exct.shared import removeNonASCII, getTime, updateRepo, sendMessage, replyMessage, timeSinceStr
 import games.economy
 
 intents = discord.Intents.default()
@@ -101,6 +101,7 @@ async def otherTasks(message, messageData, userDisplayName):
 			await replyMessage(message, reply, ping=True)
 
 
+
 	#Replace shabbles, handle games, memes, and economy
 	await checkReplies(messageData, message)
 	await games.economy.econIterate(message, messageData)
@@ -108,6 +109,8 @@ async def otherTasks(message, messageData, userDisplayName):
 	await checkChessGames(userDisplayName, messageData, message)
 	await testImage(message)
 	await browseMemes(userDisplayName, messageData, message)
+
+
 
 	if messageData.startswith("/challenge"):
 		if not any(gameSuffix in messageData for gameSuffix in gameSuffixes):
@@ -117,11 +120,39 @@ async def otherTasks(message, messageData, userDisplayName):
 				f"{[gameSuffixes[4],]} - chess"
 			)
 
+
+
 	if messageData.startswith("/updaterepo"):
 		await updateRepo(message=message)
 
+
+
 	elif messageData.startswith("/econ force-reload"):
 		importlib.reload(games.economy)
+
+
+
+	elif messageData.startswith("/uptime"):
+		currentTime = time.time()
+		uptime = currentTime - D3StartTime
+
+
+		days = uptime // 84600 % 365
+		hours = uptime // 3600 % 24
+		minutes = uptime // 60 % 60
+		seconds = uptime % 60
+		uptimeStr = ""
+		if days > 0:
+			uptimeStr += f"{days} days, "
+		if hours > 0 or days > 0:
+			uptimeStr += f"{hours} hours, "
+		if minutes > 0 or hours > 0 or days > 0:
+			uptimeStr += f"{minutes} minutes "
+		uptimeStr += f"{seconds} seconds."
+
+
+		timeSinceCreationStr = timeSinceStr("2024-09-01 12:00:00")
+
 
 
 @client.event
