@@ -213,12 +213,12 @@ async def backgroundActions(client):
 			await asyncio.sleep(3600) #60*60, 1 hour.
 			backupData() #Backup /project/src/disk/data/
 	except Exception as e:
-	sendMessageInChannel(
-		client,
-		f"# Error occurred in background actions: {e}\n-# @663451560465924097",
-		"Dau's Repository",
-		"bot-testing"
-	)
+		sendMessageInChannel(
+			client,
+			f"# Error occurred in background actions: {e}\n-# @663451560465924097",
+			"Dau's Repository",
+			"bot-testing"
+		)
 
 
 def handleShutdown(signum, frame):
