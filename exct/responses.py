@@ -48,7 +48,7 @@ async def choiceCommand(messageData, message, fileName, imgFile=None):
 
 #Stats
 
-def occurrences_updateOccurrences(name, words, filename="data/wordOccurrences.csv"):
+def occurrences_updateOccurrences(name, words, filename="/project/src/disk/data/wordOccurrences.csv"):
 	date = datetime.datetime.now().strftime("%Y-%m-%d")
 
 	words = [word.replace("\n", "`").strip().lower() for word in words]
@@ -77,12 +77,12 @@ def occurrences_updateOccurrences(name, words, filename="data/wordOccurrences.cs
 	df.to_csv(filename, index=False)
 
 
-def occurrences_preprocess_data(filename, userword):
+def occurrences_preprocess_/project/src/disk/data(filename, userword):
 	global invalidDates
 	today = datetime.datetime.strptime(datetime.datetime.now().strftime("%d-%m-%Y"), "%d-%m-%Y")
 	sept1 = datetime.datetime.strptime("01-09-2024", "%d-%m-%Y")
 
-	data = defaultdict(lambda: defaultdict(dict))
+	/project/src/disk/data = defaultdict(lambda: defaultdict(dict))
 
 	# Read CSV
 	if os.path.exists(filename):
@@ -94,7 +94,7 @@ def occurrences_preprocess_data(filename, userword):
 	df = df[df["Date"].str.match(r"^\d{4}-\d{2}-\d{2}$", na=False)]
 	df["Date"] = pd.to_datetime(df["Date"], format="%Y-%m-%d")
 	
-	# Filter data for the given word
+	# Filter /project/src/disk/data for the given word
 	df = df[df["Word"] == userword]
 
 
@@ -121,21 +121,21 @@ def occurrences_preprocess_data(filename, userword):
 	return userData, earliestDate, latestDate
 
 
-async def occurrences_saveGraph(word, message, filename="data/wordOccurrences.csv"):
+async def occurrences_saveGraph(word, message, filename="/project/src/disk/data/wordOccurrences.csv"):
 	today = datetime.datetime.strptime(datetime.datetime.now().strftime("%d-%m-%Y"), "%d-%m-%Y")
 	sept1 = datetime.datetime.strptime("01-09-2024", "%d-%m-%Y")
 	plt.clf()
 	plt.gca().cla()
 
-	#Read and preprocess the data
-	data, earliestDate, latestDate = occurrences_preprocess_data(filename, word.strip().replace("\n","`").lower())
+	#Read and preprocess the /project/src/disk/data
+	/project/src/disk/data, earliestDate, latestDate = occurrences_preprocess_/project/src/disk/data(filename, word.strip().replace("\n","`").lower())
 
-	if data is None and earliestDate is None and latestDate is None:
+	if /project/src/disk/data is None and earliestDate is None and latestDate is None:
 		await sendMessage(message, f"No occurrences of '{word}' found.")
 		return
 
-	#Plot each user's data
-	for name, entries in data.items():
+	#Plot each user's /project/src/disk/data
+	for name, entries in /project/src/disk/data.items():
 		dates = [date for date, _ in entries.items()]
 		occurrences = list(entries.values())
 
@@ -162,7 +162,7 @@ async def occurrences_saveGraph(word, message, filename="data/wordOccurrences.cs
 	plt.savefig('imgs/graph.png')
 	plt.close()
 
-	await sendMessage(message, f"Collating data for {word}")
+	await sendMessage(message, f"Collating /project/src/disk/data for {word}")
 	await message.channel.send(file=discord.File("imgs/graph.png"))
 
 
@@ -197,7 +197,7 @@ async def getTotalWords(message):
 	totalWords = 0
 	
 	#Read and aggregate occurrences from the CSV file
-	with open('data/wordOccurrences.csv', 'r') as csvfile:
+	with open('/project/src/disk/data/wordOccurrences.csv', 'r') as csvfile:
 		reader = csv.DictReader(csvfile)
 		for row in reader:
 			name = row['Name']
@@ -243,7 +243,7 @@ async def leaderboard(message):
 	sortedList = []
 	
 	#Also read and aggregate occurrences from the CSV file
-	with open('data/wordOccurrences.csv', 'r') as csvfile:
+	with open('/project/src/disk/data/wordOccurrences.csv', 'r') as csvfile:
 		reader = csv.DictReader(csvfile)
 		for row in reader:
 			name = row['Name']
@@ -286,73 +286,73 @@ async def leaderboard(message):
 def fish_updateOccurrences(name, filename):
 	date = datetime.datetime.now().strftime("%Y-%m-%d")
 	#Read the CSV file into a dictionary
-	data = defaultdict(lambda: defaultdict(int))
+	/project/src/disk/data = defaultdict(lambda: defaultdict(int))
 
 	try:
-		with open('data/fish.csv', 'r') as csvfile:
+		with open('/project/src/disk/data/fish.csv', 'r') as csvfile:
 			reader = csv.DictReader(csvfile)
 			for row in reader:
 				current_name = row['Name']
 				current_date = row['Date']
 				occurrences = int(row['Occurrences'] if row["Occurrences"] is not None else 0)
-				data[current_name][current_date] = occurrences
+				/project/src/disk/data[current_name][current_date] = occurrences
 	except FileNotFoundError:
-		pass  #If the file doesn't exist, start with an empty dataset
+		pass  #If the file doesn't exist, start with an empty /project/src/disk/dataset
 
 	#Update the occurrences for the given name and date
-	data[name][date] += 1
+	/project/src/disk/data[name][date] += 1
 
-	#Write the updated data back to the CSV file
-	with open(f'data/fish.csv', 'w', newline='') as csvfile:
+	#Write the updated /project/src/disk/data back to the CSV file
+	with open(f'/project/src/disk/data/fish.csv', 'w', newline='') as csvfile:
 		writer = csv.writer(csvfile)
 		writer.writerow(["Name", "Date", "Occurrences"])
-		for current_name, dates in data.items():
+		for current_name, dates in /project/src/disk/data.items():
 			for current_date, occurrences in dates.items():
 				writer.writerow([current_name, current_date, occurrences])
 
 
-def fish_preprocess_data(filename):
+def fish_preprocess_/project/src/disk/data(filename):
 	today = datetime.datetime.strptime(datetime.datetime.now().strftime("%d-%m-%Y"), "%d-%m-%Y")
 	sept1 = datetime.datetime.strptime("01-09-2024", "%d-%m-%Y")
 	#Read the CSV file into a dictionary
-	data = defaultdict(list)
+	/project/src/disk/data = defaultdict(list)
 
-	with open("data/fish.csv", 'r') as csvfile:
+	with open("/project/src/disk/data/fish.csv", 'r') as csvfile:
 		reader = csv.DictReader(csvfile)
 		for row in reader:
 			name = row['Name']
 			date = row['Date']
 			occurrences = int(row['Occurrences'] if row["Occurrences"] is not None else 0)
-			data[name].append((date, occurrences))
+			/project/src/disk/data[name].append((date, occurrences))
 
 	#Initialize variables to find the earliest and latest date
 	earliest_date = datetime.datetime.strptime("01-09-2024", "%d-%m-%Y")
-	latest_date = max(datetime.datetime.strptime(row['Date'], "%Y-%m-%d") for row in csv.DictReader(open("data/fish.csv")))
+	latest_date = max(datetime.datetime.strptime(row['Date'], "%Y-%m-%d") for row in csv.DictReader(open("/project/src/disk/data/fish.csv")))
 
 	#Generate a complete list of all dates between the earliest and latest date
 	all_dates = pd.date_range(start=sept1, end=today).strftime("%Y-%m-%d")
 
 	#Ensure all names have an entry for every date in the range with occurrences set to 0 if missing
-	for name in data:
-		existing_dates = set(date for date, _ in data[name])
+	for name in /project/src/disk/data:
+		existing_dates = set(date for date, _ in /project/src/disk/data[name])
 		for date in all_dates:
 			if date not in existing_dates:
-				data[name].append((date, 0))
+				/project/src/disk/data[name].append((date, 0))
 		#Sort by date after filling in missing dates
-		data[name].sort(key=lambda x: datetime.datetime.strptime(x[0], "%Y-%m-%d"))
+		/project/src/disk/data[name].sort(key=lambda x: datetime.datetime.strptime(x[0], "%Y-%m-%d"))
 
-	return data, earliest_date, latest_date
+	return /project/src/disk/data, earliest_date, latest_date
 
 def fish_saveGraph(filename):
 	today = datetime.datetime.strptime(datetime.datetime.now().strftime("%d-%m-%Y"), "%d-%m-%Y")
 	plt.clf()
 	plt.gca().cla()
 
-	#Read and preprocess the data
-	data, earliest_date, latest_date = fish_preprocess_data(filename)
+	#Read and preprocess the /project/src/disk/data
+	/project/src/disk/data, earliest_date, latest_date = fish_preprocess_/project/src/disk/data(filename)
 
-	#Plot each user's data
-	for name, entries in data.items():
+	#Plot each user's /project/src/disk/data
+	for name, entries in /project/src/disk/data.items():
 		dates = [datetime.datetime.strptime(date, "%Y-%m-%d") for date, _ in entries]
 		occurrences = [occ for _, occ in entries]
 		plt.plot(dates, occurrences, marker='o', label=name)
@@ -470,7 +470,7 @@ async def checkReplies(messageData, message):
 			await sendMessage(message, f"There have been {int(fishFile.readlines()[0].strip())} fish since [15:08, 02/09/24].")
 		"""
 		fish_saveGraph("fish")
-		await replyMessage(message, "Collating data;\nFish occurrences over time, per user")
+		await replyMessage(message, "Collating /project/src/disk/data;\nFish occurrences over time, per user")
 		await message.channel.send(file=discord.File("imgs/graph.png"))
 
 

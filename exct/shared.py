@@ -47,7 +47,7 @@ def formatNumber(num, seperator=",", delimiter="."):
 
 
 async def sendMessage(message, messageText):
-	with open("data/log.txt", "a", encoding="utf-8") as logFile:
+	with open("/project/src/disk/data/log.txt", "a", encoding="utf-8") as logFile:
 		if "*An error occurred;*" not in messageText:
 			logFile.write("\n" + f"{getTime()} // {message.guild} // SEND {message.author} // {messageText}".replace('\n', ';'))
 
@@ -56,7 +56,7 @@ async def sendMessage(message, messageText):
 
 
 async def replyMessage(message, messageText, ping=True):
-	with open("data/log.txt", "a", encoding="utf-8") as logFile:
+	with open("/project/src/disk/data/log.txt", "a", encoding="utf-8") as logFile:
 		if "*An error occurred;*" not in messageText:
 			logFile.write("\n" + f"{getTime()} // {message.guild} // REPLY {message.author} // {messageText.strip()}")
 

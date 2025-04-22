@@ -28,7 +28,7 @@ async def on_ready():
 async def otherTasks(message, messageData, userDisplayName):
 	global D3StartTime
 	"""Handles all other asynchronous tasks."""
-	with open("data/wordsSinceSpanishInquisition.txt", "r") as spainFile:
+	with open("/project/src/disk/data/wordsSinceSpanishInquisition.txt", "r") as spainFile:
 		wordsSinceSpanishInquisition = int(spainFile.readlines()[0].strip())
 		wordsSinceSpanishInquisition += 1
 		if wordsSinceSpanishInquisition > 1024:
@@ -36,7 +36,7 @@ async def otherTasks(message, messageData, userDisplayName):
 				await message.reply(file=discord.File("imgs/Inquisition.gif"), mention_author=True)
 				wordsSinceSpanishInquisition = 0
 
-	with open("data/wordsSinceSpanishInquisition.txt", "w") as spainFile:
+	with open("/project/src/disk/data/wordsSinceSpanishInquisition.txt", "w") as spainFile:
 		spainFile.write(str(wordsSinceSpanishInquisition))
 
 	if messageData.startswith("/help"):
@@ -176,29 +176,57 @@ async def on_message(message):
 
 
 def backupData():
-	githubToken = os.getenv("GITHUB_TOKEN")
-	url = f"https://{githubToken}@github.com/mrdau4096/DThree-Data-Backups.git"
-	cloneDir = "data-backups"
+	dataDir = "/project/src/disk/data"
+	github_token = os.getenv("GITHUB_TOKEN")
+	repo_url = f"https://{github_token}@github.com/mrdau4096/DThree-Data-Backups.git"
 
-	subprocess.run(["git", "clone", url, cloneDir])
-	subprocess.run(["cp", "-r", "data/", os.path.join(cloneDir, "data")])
+	if not os.path.exists(os.path.join(dataDir, ".git")): #Ensure folder is a valid git repo location
+		subprocess.run(["git", "init"], cwd=dataDir)
+		subprocess.run(["git", "remote", "add", "origin", repo_url], cwd=dataDir)
 
-	subprocess.run(["git", "-C", cloneDir, "config", "user.email", "d3@render.com"])
-	subprocess.run(["git", "-C", cloneDir, "config", "user.name", "DThree"])
+	subprocess.run(["git", "config", "user.email", "d3@render.com"], cwd=dataDir)
+	subprocess.run(["git", "config", "user.name", "DThree"], cwd=dataDir)
 
+	subprocess.run(["git", "add", "."], cwd=dataDir)
+	subprocess.run(["git", "commit", "-m", f"{datetime.datetime.now()}"], cwd=dataDir)
+	subprocess.run(["git", "branch", "-M", "main"], cwd=dataDir)
+	subprocess.run(["git", "push", "-u", "origin", "main"], cwd=dataDir)
 
-	subprocess.run(["git", "-C", cloneDir, "add", "."])
-	subprocess.run(["git", "-C", cloneDir, "commit", "-m", f"{datetime.datetime.now()}"])
-	subprocess.run(["git", "-C", cloneDir, "branch", "-M", "main"])
-	subprocess.run(["git", "-C", cloneDir, "push", "-u", "origin", "main"])
+def pullData():
+	dataDir = "/project/src/disk/data"
+	github_token = os.getenv("GITHUB_TOKEN")
+	repo_url = f"https://{github_token}@github.com/mrdau4096/DThree-Data-Backups.git"
+
+	if not os.path.exists(os.path.join(dataDir, ".git")): #Ensure folder is a valid git repo location
+		subprocess.run(["git", "init"], cwd=dataDir)
+		subprocess.run(["git", "remote", "add", "origin", repo_url], cwd=dataDir)
+
+	subprocess.run(["git", "pull", "origin", "main"], cwd=dataDir)
 
 
 async def backgroundActions(client):
 	global D3StartTime
 	D3StartTime = time.time()
-	while True:
-		backupData() #Backup /data/
-		await asyncio.sleep(3600) #60*60, 1 hour.
+	try:
+		pullData()	
+		while True:
+			await asyncio.sleep(3600) #60*60, 1 hour.
+			backupData() #Backup /project/src/disk/data/
+	except Exception as e:
+		guildList = dict([(g.name, g) for g in client.guilds])
+		guild = guildList["Dau's Repository"]
+
+		if guild is not None:
+			channelList = dict([(ch.name, ch) for ch in guild.text_channels])
+			channel = list(channelList.values())["bot-testing"]
+
+			if channel is not None:
+				await channel.send(f"# Error occurred in background actions: {e}\n-# @663451560465924097") #Ping Dau#7446
+			else:
+				raise ValueError("Invalid Channel")
+
+		else:
+			raise ValueError("Invalid Guild")
 
 
 
