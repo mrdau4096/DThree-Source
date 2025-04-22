@@ -48,9 +48,9 @@ async def browseMemes(userDisplayName, messageData, message):
 
 	if messageData.startswith("/commonmistakes") or messageData.startswith("/common-mistakes"):
 		reply = "Frequent mistakes and their corrections:\n"
-		for key, /project/src/disk/data in commonMistakes.items():
-			if (key.lower()) == (/project/src/disk/data.lower()): continue
-			reply += f"{key} -> {/project/src/disk/data}\n"
+		for key, data in commonMistakes.items():
+			if (key.lower()) == (data.lower()): continue
+			reply += f"{key} -> {data}\n"
 		await replyMessage(message, reply)
 
 	elif messageData.startswith("/browse"):

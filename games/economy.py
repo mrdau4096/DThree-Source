@@ -606,7 +606,7 @@ async def econIterate(message, messageData, forceRandomEvent=False, output=True,
 							helpMSG = f"""
 For help with commands, use `/econ help commands`.
 For help with buying new assets, use `/econ help buy`
-For help with the /project/src/disk/data shown each turn, use `/econ help /project/src/disk/data`
+For help with the data shown each turn, use `/econ help /data`
 For help with random events, use `/econ help events`
 For further questions, please ask \_\_dau\_\_ directly.
 
@@ -669,7 +669,7 @@ There are multiple random events, of which the most notable are;
 - Another company requests a loan from you: They will be in debt to you, your balance will decrease, and interest applies.
 										"""
 
-							elif commandSections[1] in ("/project/src/disk/data",):
+							elif commandSections[1] in ("data",):
 									helpMSG = f"""
 CEO: User who owns this company
 Name: Name of the company
@@ -682,8 +682,8 @@ Number of Assets, Number of Debts & Number of Loans: Shows how many of each if m
 									helpMSG = f"""
 Types of factory:
 										"""
-									for facType, /project/src/disk/data in factoryTypes.items():
-										helpMSG += f"- {facType.capitalize()}: Income = {userCompany.currency.format(/project/src/disk/data['income'])}, Expenses = {userCompany.currency.format(/project/src/disk/data['expenses'])}, Efficiency = {round(100*/project/src/disk/data['speed'])}%, Construction Cost: {userCompany.currency.format(/project/src/disk/data['buildCost'])}\n"
+									for facType, data in factoryTypes.items():
+										helpMSG += f"- {facType.capitalize()}: Income = {userCompany.currency.format(data['income'])}, Expenses = {userCompany.currency.format(/project/src/disk/data['expenses'])}, Efficiency = {round(100*/project/src/disk/data['speed'])}%, Construction Cost: {userCompany.currency.format(/project/src/disk/data['buildCost'])}\n"
 									helpMSG += f"""
 Each have their own speeds, incomes, and so on. A Factory can only have 1 type at any time.
 Factories can be bought using `/econ buy factory [type]`
