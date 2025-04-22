@@ -18,15 +18,20 @@ def timeSinceStr(dateStr: str) -> str:
 	now = datetime.now()
 	delta = relativedelta(now, then)
 	parts = []
-    if delta.years:   parts.append(f"{delta.years} year{'s' if delta.years != 1 else ''}")
-    if delta.months:  parts.append(f"{delta.months} month{'s' if delta.months != 1 else ''}")
-    if delta.days:    parts.append(f"{delta.days} day{'s' if delta.days != 1 else ''}")
-    if delta.hours:   parts.append(f"{delta.hours} hour{'s' if delta.hours != 1 else ''}")
-    if delta.minutes: parts.append(f"{delta.minutes} minute{'s' if delta.minutes != 1 else ''}")
-    if delta.seconds and not parts:
-        parts.append(f"{delta.seconds} second{'s' if delta.seconds != 1 else ''}")
+	if delta.years:
+		parts.append(f"{delta.years} year{'s' if delta.years != 1 else ''}")
+	if delta.months:
+		parts.append(f"{delta.months} month{'s' if delta.months != 1 else ''}")
+	if delta.days:
+		parts.append(f"{delta.days} day{'s' if delta.days != 1 else ''}")
+	if delta.hours:
+		parts.append(f"{delta.hours} hour{'s' if delta.hours != 1 else ''}")
+	if delta.minutes:
+		parts.append(f"{delta.minutes} minute{'s' if delta.minutes != 1 else ''}")
+	if delta.seconds and not parts:
+		parts.append(f"{delta.seconds} second{'s' if delta.seconds != 1 else ''}")
 
-    return ', '.join(parts[:-1]) + (' and ' if len(parts) > 1 else '') + parts[-1] + ' ago' if parts else 'Undetermined'
+	return ', '.join(parts[:-1]) + (' and ' if len(parts) > 1 else '') + parts[-1] + ' ago' if parts else 'Undetermined'
 
 
 
