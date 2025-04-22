@@ -486,4 +486,6 @@ async def checkReplies(messageData, message):
 		await sendMessage(message, "innit")
 	elif ("budget" in messageData):
 		await sendMessage(message, "fr")
+	elif ("denmark" or "dane" in messageData):
+		await sendMessage(message, "DANSKJÄVLAR")
 
