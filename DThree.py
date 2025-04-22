@@ -140,10 +140,10 @@ async def otherTasks(message, messageData, userDisplayName):
 		uptime = currentTime - D3StartTime
 
 
-		days = uptime // 84600 % 365
-		hours = uptime // 3600 % 24
-		minutes = uptime // 60 % 60
-		seconds = uptime % 60
+		days = int(uptime // 84600 % 365)
+		hours = int(uptime // 3600 % 24)
+		minutes = int(uptime // 60 % 60)
+		seconds = int(floor(uptime % 60))
 		uptimeStr = ""
 		if days > 0:
 			uptimeStr += f"{days} days, "
