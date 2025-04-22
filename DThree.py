@@ -153,6 +153,8 @@ async def otherTasks(message, messageData, userDisplayName):
 
 		timeSinceCreationStr = timeSinceStr("2024-09-01 12:00:00")
 
+		await replyMessage(message, f"DThree has been online for: {uptimeStr}\nTime since DThree was created: {timeSinceCreationStr}", ping=True)
+
 
 
 @client.event
