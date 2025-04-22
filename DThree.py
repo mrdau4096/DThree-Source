@@ -1,11 +1,13 @@
-import discord, asyncio, random, importlib, os, subprocess, datetime, time
+import discord, asyncio, random, importlib, os, subprocess, datetime, time, signal
 from games.chess import checkChessGames, testImage
 from games.noughtsAndCrosses import checkNoughtsAndCrossesGames
 from exct.responses import checkReplies
 from exct.memeBrowse import browseMemes
 from exct.webSearch import lookUp
-from exct.shared import removeNonASCII, getTime, updateRepo, sendMessage, replyMessage, timeSinceStr
+from exct.shared import removeNonASCII, getTime, updateRepo, sendMessage, replyMessage, timeSinceStr, sendMessageInChannel
 import games.economy
+
+global D3StartTime, client
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -14,8 +16,6 @@ intents.guilds = True
 intents.presences = True
 client = discord.Client(intents=intents)
 
-
-global D3StartTime
 gameSuffixes = ("o&x", "n&c", "ttt", "tictactoe", "noughtsandcrosses", "chess")
 
 
@@ -213,23 +213,24 @@ async def backgroundActions(client):
 			await asyncio.sleep(3600) #60*60, 1 hour.
 			backupData() #Backup /project/src/disk/data/
 	except Exception as e:
-		guildList = dict([(g.name, g) for g in client.guilds])
-		guild = guildList["Dau's Repository"]
-
-		if guild is not None:
-			channelList = dict([(ch.name, ch) for ch in guild.text_channels])
-			channel = list(channelList.values())["bot-testing"]
-
-			if channel is not None:
-				await channel.send(f"# Error occurred in background actions: {e}\n-# @663451560465924097") #Ping Dau#7446
-			else:
-				raise ValueError("Invalid Channel")
-
-		else:
-			raise ValueError("Invalid Guild")
+	sendMessageInChannel(
+		client,
+		f"# Error occurred in background actions: {e}\n-# @663451560465924097",
+		"Dau's Repository",
+		"bot-testing"
+	)
 
 
+def handleShutdown(signum, frame):
+	global client
 
+	#Warn of shutdown.
+	sendMessageInChannel(client, "Shutdown imminent; Either redeploy or manual termination.", "Dau's Repository", "dthree-space")
+
+	sys.exit(0)
+
+signal.signal(signal.SIGINT, handleShutdown)
+signal.signal(signal.SIGTERM, handleShutdown)
 
 
 

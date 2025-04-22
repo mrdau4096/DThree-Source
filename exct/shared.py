@@ -79,3 +79,21 @@ async def updateRepo(message=None):
 
 def removeNonASCII(text):
 	return ''.join(char for char in text if ord(char) < 128)
+
+
+
+def sendMessageInChannel(client, text, guild, channel):
+	guildList = dict([(g.name, g) for g in client.guilds])
+	guild = guildList[guild]
+
+	if guild is not None:
+		channelList = dict([(ch.name, ch) for ch in guild.text_channels])
+		channel = list(channelList.values())[channel]
+
+		if channel is not None:
+			await channel.send(text)
+		else:
+			raise ValueError("Invalid Channel")
+
+	else:
+		raise ValueError("Invalid Guild")
