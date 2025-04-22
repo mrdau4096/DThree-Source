@@ -15,7 +15,7 @@ def getTime(dateOnly=False):
 def timeSinceStr(dateStr: str) -> str:
 	#Takes YYYY-MM-DD HH:MM:SS
 	then = datetime.datetime.strptime(dateStr, "%Y-%m-%d %H:%M:%S")
-	now = datetime.now()
+	now = datetime.datetime.now()
 	delta = relativedelta(now, then)
 	parts = []
 	if delta.years:
