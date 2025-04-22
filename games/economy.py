@@ -683,7 +683,7 @@ Number of Assets, Number of Debts & Number of Loans: Shows how many of each if m
 Types of factory:
 										"""
 									for facType, data in factoryTypes.items():
-										helpMSG += f"- {facType.capitalize()}: Income = {userCompany.currency.format(data['income'])}, Expenses = {userCompany.currency.format(/project/src/disk/data['expenses'])}, Efficiency = {round(100*/project/src/disk/data['speed'])}%, Construction Cost: {userCompany.currency.format(/project/src/disk/data['buildCost'])}\n"
+										helpMSG += f"- {facType.capitalize()}: Income = {userCompany.currency.format(data['income'])}, Expenses = {userCompany.currency.format(data['expenses'])}, Efficiency = {round(100*data['speed'])}%, Construction Cost: {userCompany.currency.format(data['buildCost'])}\n"
 									helpMSG += f"""
 Each have their own speeds, incomes, and so on. A Factory can only have 1 type at any time.
 Factories can be bought using `/econ buy factory [type]`
