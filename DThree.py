@@ -219,6 +219,7 @@ async def backgroundActions(client):
 			"Dau's Repository",
 			"bot-testing"
 		)
+		print(e)
 
 
 async def handleShutdown(signum, frame):
