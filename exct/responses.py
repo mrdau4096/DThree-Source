@@ -48,7 +48,7 @@ async def choiceCommand(messageData, message, fileName, imgFile=None):
 
 #Stats
 
-def occurrences_updateOccurrences(name, words, filename="data/wordOccurrences.csv"):
+def occurrences_updateOccurrences(name, words, filename="data/wordOccurrences.csv"): #The thing allowing us to check how many times a word has been written
 	date = datetime.datetime.now().strftime("%Y-%m-%d")
 
 	words = [word.replace("\n", "`").strip().lower() for word in words]
@@ -283,10 +283,10 @@ async def leaderboard(message):
 
 #FISH
 
-def fish_updateOccurrences(name, filename):
-	date = datetime.datetime.now().strftime("%Y-%m-%d")
+def fish_updateOccurrences(name, filename): #Puts fish in box
+	date = datetime.datetime.now().strftime("%Y-%m-%d") #puts label with time on box
 	#Read the CSV file into a dictionary
-	data = defaultdict(lambda: defaultdict(int))
+	data = defaultdict(lambda: defaultdict(int)) #box stuff
 
 	try:
 		with open('data/fish.csv', 'r') as csvfile:
@@ -296,13 +296,13 @@ def fish_updateOccurrences(name, filename):
 				current_date = row['Date']
 				occurrences = int(row['Occurrences'] if row["Occurrences"] is not None else 0)
 				data[current_name][current_date] = occurrences
-	except FileNotFoundError:
-		pass  #If the file doesn't exist, start with an empty dataset
+	except FileNotFoundError: #If first fish box, then make space for more fishes boxes.
+		pass  #If the file doesn't exist, start with an empty dataset.
 
 	#Update the occurrences for the given name and date
 	data[name][date] += 1
 
-	#Write the updated data back to the CSV file
+	#Write the updated data back to the CSV file. Puts fish box in fish-space.
 	with open(f'data/fish.csv', 'w', newline='') as csvfile:
 		writer = csv.writer(csvfile)
 		writer.writerow(["Name", "Date", "Occurrences"])
@@ -386,7 +386,7 @@ def fish_saveGraph(filename):
 
 
 
-#main
+#main reply section. This is where most of the messages are actually sent.
 async def checkReplies(messageData, message):
 
 	if messageData.startswith("/count "):
