@@ -435,7 +435,7 @@ async def checkReplies(messageData, message):
 		for name, _ in timesList:
 			finalMessage += f"\n- {name}: Joined [{nameDates[name][:-9]}], Which was {timeSinceStr(nameDates[name])}."
 
-		replyMessage(message, finalMessage, ping=True)
+		await replyMessage(message, finalMessage, ping=True)
 
 
 
