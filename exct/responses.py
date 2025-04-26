@@ -440,12 +440,12 @@ async def checkReplies(messageData, message):
 
 
 	#Reply to command messages
-	with open("src/textFiles/cmds.txt", "r") as cmdFile:
+	with open("/opt/render/project/src/textFiles/cmds.txt", "r") as cmdFile:
 		commands = cmdFile.readlines()
 	for cmd in commands:
 		if cmd == "vibe":
 			if messageData.startswith("/vibe list"):
-				with open(f"src/textFiles/phrases/vibe.txt", "r", encoding="utf-8") as file:
+				with open(f"/opt/render/project/src/textFiles/phrases/vibe.txt", "r", encoding="utf-8") as file:
 					fileData = file.readlines()
 					vibeList = ''.join(["- "+vibe.split("¬")[0]+"\n" for vibe in fileData])
 					await replyMessage(message, vibeList, ping=True)
