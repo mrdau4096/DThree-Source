@@ -431,10 +431,10 @@ async def checkReplies(messageData, message):
 
 		timesList.sort(key=lambda x: x[1], reverse=True)
 
-		finalMessage = "# Time spent on the server:```"
+		finalMessage = "# Time spent on the server:\n```"
 		for name, _ in timesList:
 			finalMessage += f"\n- {name}:{' '*(15-len(name))} Joined [{nameDates[name][:-9]}], Which was {timeSinceStr(nameDates[name], onlyDate=True)}."
-		finalMessage += "```"
+		finalMessage += "\n```"
 
 		await replyMessage(message, finalMessage, ping=True)
 
