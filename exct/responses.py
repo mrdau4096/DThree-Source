@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import pandas as pd
 import numpy as np
-from exct.shared import sendMessage, replyMessage, getTime
+from exct.shared import sendMessage, replyMessage, getTime, timeSinceStr, secondsSince
 
 global invalidDates
 previousChoices = {}
@@ -411,13 +411,41 @@ async def checkReplies(messageData, message):
 		await replyMessage(message, "hah, typo", ping=True)
 
 
+	if messageData.startswith("/serverage"):
+		nameDates = {
+			"Dau": "2023-10-18 00:00:00",
+			"TornadoTeam": "2023-10-18 00:00:00",
+			"Howitzer": "2023-10-18 00:00:00",
+			"Ace": "2023-10-18 00:00:00",
+			"RandomUser78": "2023-10-18 00:00:00",
+			"Shabbles": "2023-10-18 00:00:00",
+			"Boogie152": "2024-06-05 00:00:00",
+			"MeltedWX": "2023-10-22 00:00:00",
+			"UltrawolK": "2023-10-23 00:00:00",
+			"DThree": "2024-09-01 08:00:00"
+		}
+
+		timesList = []
+		for name, date in nameDates.items():
+			timesList.append((name, secondsSince(date)))
+
+		timesList.sort(key=lambda x: x[1], reverse=True)
+
+		finalMessage = "# Time spent on the server:"
+		for name, _ in timesList:
+			finalMessage += f"\n- {name}: Joined [{nameDates[name][:-9]}], Which was {timeSinceStr(nameDates[name])}."
+
+		replyMessage(message, finalMessage, ping=True)
+
+
+
 	#Reply to command messages
-	with open("/opt/render/project/src/textFiles/cmds.txt", "r") as cmdFile:
+	with open("src/textFiles/cmds.txt", "r") as cmdFile:
 		commands = cmdFile.readlines()
 	for cmd in commands:
 		if cmd == "vibe":
 			if messageData.startswith("/vibe list"):
-				with open(f"/opt/render/project/src/textFiles/phrases/vibe.txt", "r", encoding="utf-8") as file:
+				with open(f"src/textFiles/phrases/vibe.txt", "r", encoding="utf-8") as file:
 					fileData = file.readlines()
 					vibeList = ''.join(["- "+vibe.split("¬")[0]+"\n" for vibe in fileData])
 					await replyMessage(message, vibeList, ping=True)

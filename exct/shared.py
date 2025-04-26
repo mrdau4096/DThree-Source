@@ -34,6 +34,12 @@ def timeSinceStr(dateStr: str) -> str:
 	return ', '.join(parts[:-1]) + (' and ' if len(parts) > 1 else '') + parts[-1] + ' ago' if parts else 'Undetermined'
 
 
+def secondsSince(dateStr: str) -> int:
+	then = datetime.datetime.strptime(dateStr, "%Y-%m-%d %H:%M:%S")
+	now = datetime.datetime.now()
+	return int((now - then).total_seconds())
+
+
 
 def formatNumber(num, seperator=",", delimiter="."):
 	formatted = ""

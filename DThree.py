@@ -154,7 +154,7 @@ async def otherTasks(message, messageData, userDisplayName):
 		uptimeStr += f"{seconds} seconds."
 
 
-		timeSinceCreationStr = timeSinceStr("2024-09-01 12:00:00")
+		timeSinceCreationStr = timeSinceStr("2024-09-01 08:00:00")
 
 		await replyMessage(message, f"DThree has been online for: {uptimeStr}\nTime since DThree was created: {timeSinceCreationStr}", ping=True)
 
