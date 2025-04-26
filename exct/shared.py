@@ -12,7 +12,7 @@ def getTime(dateOnly=False):
 
 
 
-def timeSinceStr(dateStr: str) -> str:
+def timeSinceStr(dateStr: str, onlyDate=False) -> str:
 	#Takes YYYY-MM-DD HH:MM:SS
 	then = datetime.datetime.strptime(dateStr, "%Y-%m-%d %H:%M:%S")
 	now = datetime.datetime.now()
@@ -24,11 +24,11 @@ def timeSinceStr(dateStr: str) -> str:
 		parts.append(f"{delta.months} month{'s' if delta.months != 1 else ''}")
 	if delta.days:
 		parts.append(f"{delta.days} day{'s' if delta.days != 1 else ''}")
-	if delta.hours:
+	if delta.hours and not onlyDate:
 		parts.append(f"{delta.hours} hour{'s' if delta.hours != 1 else ''}")
-	if delta.minutes:
+	if delta.minutes and not onlyDate:
 		parts.append(f"{delta.minutes} minute{'s' if delta.minutes != 1 else ''}")
-	if delta.seconds and not parts:
+	if delta.seconds and not onlyDate and not parts:
 		parts.append(f"{delta.seconds} second{'s' if delta.seconds != 1 else ''}")
 
 	return ', '.join(parts[:-1]) + (' and ' if len(parts) > 1 else '') + parts[-1] + ' ago' if parts else 'Undetermined'
