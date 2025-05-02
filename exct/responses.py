@@ -444,7 +444,8 @@ async def checkReplies(messageData, message):
 	commands = None
 	with open("/opt/render/project/src/textFiles/cmds.txt", "r") as cmdFile:
 		commands = cmdFile.readlines()
-	print(commands)
+	if message.author == "__dau__":
+		await replyMessage(message, str(commands))
 	for cmd in commands:
 		print(cmd)
 		if cmd == "vibe":

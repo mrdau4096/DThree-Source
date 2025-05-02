@@ -222,6 +222,7 @@ async def backgroundActions(client):
 		print(e)
 
 
+"""
 async def handleShutdown(signum, frame):
 	global client
 
@@ -232,6 +233,7 @@ async def handleShutdown(signum, frame):
 
 signal.signal(signal.SIGINT, handleShutdown)
 signal.signal(signal.SIGTERM, handleShutdown)
+"""
 
 
 
