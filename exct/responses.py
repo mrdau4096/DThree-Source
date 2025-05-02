@@ -443,10 +443,7 @@ async def checkReplies(messageData, message):
 	commands = None
 	with open("/opt/render/project/src/textFiles/cmds.txt", "r") as cmdFile:
 		commands = [cmd.strip().lower() for cmd in cmdFile.readlines()]
-	if str(message.author.name) == "__dau__":
-		await replyMessage(message, str(commands))
 	for cmd in commands:
-		print(cmd)
 		if cmd == "vibe":
 			if messageData.startswith("/vibe list"):
 				with open(f"/opt/render/project/src/textFiles/phrases/vibe.txt", "r", encoding="utf-8") as file:
