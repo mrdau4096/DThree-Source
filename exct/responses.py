@@ -327,7 +327,7 @@ def fish_preprocess_data(filename):
 
 	#Initialize variables to find the earliest and latest date
 	earliest_date = datetime.datetime.strptime("01-09-2024", "%d-%m-%Y")
-	latest_date = max(datetime.datetime.strptime(row['Date'], "%Y-%m-%d") for row in csv.DictReader(open("data/fish.csv")))
+	latest_date = max(datetime.datetime.strptime(row['Date'], "%Y-%m-%d") for row in csv.DictReader(open("/project/src/disk/data/fish.csv")))
 
 	#Generate a complete list of all dates between the earliest and latest date
 	all_dates = pd.date_range(start=sept1, end=today).strftime("%Y-%m-%d")
@@ -441,7 +441,7 @@ async def checkReplies(messageData, message):
 
 
 	#Reply to command messages
-	with open("/opt/render/project/src/textFiles/cmds.txt", "r") as cmdFile:
+	with open("src/textFiles/cmds.txt", "r") as cmdFile:
 		commands = cmdFile.readlines()
 	for cmd in commands:
 		if cmd == "vibe":

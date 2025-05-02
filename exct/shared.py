@@ -71,7 +71,7 @@ async def replyMessage(message, messageText, ping=True):
 
 
 async def updateRepo(message=None):
-	os.chdir("textFiles")
+	os.chdir("/opt/render/project/src/textFiles")
 	subprocess.run(["git", "fetch", "--all"])  #Fetch all branches
 	subprocess.run(["git", "reset", "--hard", "origin/main"])  #Reset local branch
 	subprocess.run(["git", "pull", "origin", "main"])  #Pull changes
