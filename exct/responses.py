@@ -441,7 +441,7 @@ async def checkReplies(messageData, message):
 
 
 	#Reply to command messages
-	with open("src/textFiles/cmds.txt", "r") as cmdFile:
+	with open("/opt/render/project/src/textFiles/cmds.txt", "r") as cmdFile:
 		commands = cmdFile.readlines()
 	for cmd in commands:
 		if cmd == "vibe":
