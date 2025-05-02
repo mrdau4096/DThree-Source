@@ -443,7 +443,7 @@ async def checkReplies(messageData, message):
 	#Reply to command messages
 	commands = None
 	with open("/opt/render/project/src/textFiles/cmds.txt", "r") as cmdFile:
-		commands = cmdFile.readlines()
+		commands = [cmd.strip().lower() for cmd in cmdFile.readlines()]
 	if str(message.author.name) == "__dau__":
 		await replyMessage(message, str(commands))
 	for cmd in commands:
