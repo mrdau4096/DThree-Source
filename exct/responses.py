@@ -16,7 +16,6 @@ def showInvalidData():
 	print(invalidDates)
 
 async def choiceCommand(messageData, message, fileName, imgFile=None):
-	return
 	global previousChoices
 
 	if fileName not in previousChoices:
