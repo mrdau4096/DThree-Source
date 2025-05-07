@@ -433,7 +433,7 @@ async def checkReplies(messageData, message):
 
 		finalMessage = "# Time spent on the server:\n```"
 		for name, _ in timesList:
-			finalMessage += f"\n- {name}:{' '*(15-len(name))} Joined [{nameDates[name]}], Which was {timeSinceStr(nameDates[name])}."
+			finalMessage += f"\n- {name}:{' '*(12-len(name))} Joined [{nameDates[name][:-3]}], Which was {timeSinceStr(nameDates[name])}."
 		finalMessage += "\n```"
 
 		await replyMessage(message, finalMessage, ping=True)
