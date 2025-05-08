@@ -85,7 +85,7 @@ async def otherTasks(message, messageData, userDisplayName):
 	"""Handles all other asynchronous tasks."""
 	spainFilePath = "/project/src/disk/data/wordsSinceSpanishInquisition.txt"
 	if os.path.exists(spainFilePath):
-		with open(spainFilePath, "r+") as spainFile:
+		with open(spainFilePath, "r") as spainFile:
 			lines = spainFile.readlines()
 			if len(lines) > 0:
 				wordsSinceSpanishInquisition = int(lines[0].strip())
@@ -97,6 +97,8 @@ async def otherTasks(message, messageData, userDisplayName):
 			else:
 				#If file gets nuked again, repopulate it.
 				wordsSinceSpanishInquisition = 0
+
+		with open(spainFilePath, "w") as spainFile:
 			spainFile.write(str(wordsSinceSpanishInquisition))
 
 	else:
