@@ -412,16 +412,17 @@ async def checkReplies(messageData, message):
 
 	if messageData.startswith("/serverage"):
 		nameDates = {
-			"Dau": "2023-10-18 00:00:00",
-			"TornadoTeam": "2023-10-18 00:00:00",
-			"Howitzer": "2023-10-18 00:00:00",
-			"Ace": "2023-10-18 00:00:00",
-			"RandomUser78": "2023-10-18 00:00:00",
-			"Shabbles": "2023-10-18 00:00:00",
-			"Boogie152": "2024-06-05 00:00:00",
-			"MeltedWX": "2023-10-22 00:00:00",
-			"UltrawolK": "2023-10-23 00:00:00",
-			"DThree": "2024-09-01 08:00:00"
+			"Dau": "2023-10-18 18:46:00",
+			"TornadoTeam": "2023-10-18 17:13:00",
+			"Howitzer": "2023-10-18 18:33:00",
+			"Ace": "2023-10-18 18:33:00",
+			"RandomUser78": "2023-10-18 18:43:00",
+			"Shabbles": "2023-10-18 20:53:00",
+			"Boogie152": "2024-07-05 12:47:00",
+			"MeltedWX": "2023-10-22 20:24:00",
+			"UltrawolK": "2023-10-23 19:19:00",
+			"DThree": "2024-09-01 00:09:00",
+			"Gitty": "2025-05-07 13:21:00",
 		}
 
 		timesList = []
@@ -432,7 +433,7 @@ async def checkReplies(messageData, message):
 
 		finalMessage = "# Time spent on the server:\n```"
 		for name, _ in timesList:
-			finalMessage += f"\n- {name}:{' '*(15-len(name))} Joined [{nameDates[name][:-9]}], Which was {timeSinceStr(nameDates[name], onlyDate=True)}."
+			finalMessage += f"\n- {name}:{' '*(12-len(name))} Joined [{nameDates[name][:-3]}], Which was {timeSinceStr(nameDates[name])}."
 		finalMessage += "\n```"
 
 		await replyMessage(message, finalMessage, ping=True)
