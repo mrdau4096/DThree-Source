@@ -32,16 +32,26 @@ async def otherTasks(message, messageData, userDisplayName):
 	global D3StartTime, DTHREE_PUBLIC
 
 	"""Handles all other asynchronous tasks."""
-	with open("/project/src/disk/data/wordsSinceSpanishInquisition.txt", "r") as spainFile:
-		wordsSinceSpanishInquisition = int(spainFile.readlines()[0].strip())
-		wordsSinceSpanishInquisition += 1
-		if wordsSinceSpanishInquisition > 1023:
-			if random.randint(0, 1023) == 127:
-				await message.reply(file=discord.File("imgs/Inquisition.gif"), mention_author=True)
+	spainFilePath = "/project/src/disk/data/wordsSinceSpanishInquisition.txt"
+	if os.path.exists(spainFilePath):
+		with open(spainFilePath, "r+") as spainFile:
+			lines = spainFile.readlines()
+			if len(lines) > 0:
+				wordsSinceSpanishInquisition = int(lines[0].strip())
+				wordsSinceSpanishInquisition += 1
+				if wordsSinceSpanishInquisition > 1023:
+					if random.randint(0, 1023) == 127:
+						await message.reply(file=discord.File("imgs/Inquisition.gif"), mention_author=True)
+						wordsSinceSpanishInquisition = 0
+			else:
+				#If file gets nuked again, repopulate it.
 				wordsSinceSpanishInquisition = 0
+			spainFile.write(str(wordsSinceSpanishInquisition))
 
-	with open("/project/src/disk/data/wordsSinceSpanishInquisition.txt", "w") as spainFile:
-		spainFile.write(str(wordsSinceSpanishInquisition))
+	else:
+		#If file gets nuked again, remake it.
+		with open(spainFilePath, "x") as spainFile:
+			spainFile.write("0")
 
 	if messageData.startswith("/help"):
 		helpMessage = f"""
@@ -110,7 +120,7 @@ async def otherTasks(message, messageData, userDisplayName):
 
 
 	#Replace shabbles, handle games, memes, and economy
-	#await checkReplies(messageData, message)
+	await checkReplies(messageData, message)
 	await games.economy.econIterate(message, messageData)
 	await checkNoughtsAndCrossesGames(userDisplayName, messageData, message)
 	await checkChessGames(userDisplayName, messageData, message)
