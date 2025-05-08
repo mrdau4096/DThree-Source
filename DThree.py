@@ -110,7 +110,7 @@ async def otherTasks(message, messageData, userDisplayName):
 
 
 	#Replace shabbles, handle games, memes, and economy
-	await checkReplies(messageData, message)
+	#await checkReplies(messageData, message)
 	await games.economy.econIterate(message, messageData)
 	await checkNoughtsAndCrossesGames(userDisplayName, messageData, message)
 	await checkChessGames(userDisplayName, messageData, message)
