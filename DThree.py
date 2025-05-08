@@ -141,19 +141,14 @@ async def on_message(message):
 		return
 	if (not DTHREE_PUBLIC) and message.guild.name != "Dau's Repository":
 		return
-	if not DTHREE_PUBLIC:
-		try:
-			userDisplayName, messageData = message.author.display_name, removeNonASCII(message.content.strip().lower())
-			await otherTasks(message, messageData, userDisplayName)
 		
-		except Exception as E:
-			print(f"\a\n{E}\n")
-			await replyMessage(message, f"## *An error occurred;*\n{str(E)}\n-# *Please wait.*", ping=True)
-	
-	else:
-		await replyMessage(message, "Heard:" + messageData, ping=True)
+	try:
 		userDisplayName, messageData = message.author.display_name, removeNonASCII(message.content.strip().lower())
 		await otherTasks(message, messageData, userDisplayName)
+	
+	except Exception as E:
+		print(f"\a\n{E}\n")
+		await replyMessage(message, f"## *An error occurred;*\n{str(E)}\n-# *Please wait.*", ping=True)
 
 
 
