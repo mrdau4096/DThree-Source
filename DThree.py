@@ -7,7 +7,10 @@ from exct.webSearch import lookUp
 from exct.shared import removeNonASCII, getTime, updateRepo, sendMessage, replyMessage, timeSinceStr, sendMessageInChannel
 import games.economy
 
-global D3StartTime, client
+global D3StartTime, DTHREE_PUBLIC, client
+
+#Use for testing the bot on Dau's Repository.
+DTHREE_PUBLIC = False
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -26,13 +29,18 @@ async def on_ready():
 
 
 async def otherTasks(message, messageData, userDisplayName):
-	global D3StartTime
+	global D3StartTime, DTHREE_PUBLIC
+
+	#Stop replies outside of Dau's Repository if ENV variable is set.
+	if (not DTHREE_PUBLIC) and message.guild.name != "Dau's Repository":
+		return
+
 	"""Handles all other asynchronous tasks."""
 	with open("/project/src/disk/data/wordsSinceSpanishInquisition.txt", "r") as spainFile:
 		wordsSinceSpanishInquisition = int(spainFile.readlines()[0].strip())
 		wordsSinceSpanishInquisition += 1
-		if wordsSinceSpanishInquisition > 1024:
-			if random.randint(0, 1024) == 128:
+		if wordsSinceSpanishInquisition > 1023:
+			if random.randint(0, 1023) == 127:
 				await message.reply(file=discord.File("imgs/Inquisition.gif"), mention_author=True)
 				wordsSinceSpanishInquisition = 0
 

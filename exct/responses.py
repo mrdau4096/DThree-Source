@@ -37,10 +37,10 @@ async def choiceCommand(messageData, message, fileName, imgFile=None):
 			chosenLine = random.choice(remainingChoices)
 			previousChoices[fileName].append(chosenLine)
 
-			if chosenLine != ":img:":
-				await replyMessage(message, chosenLine.replace("Â¬", "\n").replace("¬", "\n"), ping=True)
-			else:
+			if chosenLine == ":img:":
 				await message.reply(file=discord.File(f"imgs/{imgFile}.png"), mention_author=True)
+			else:
+				await replyMessage(message, chosenLine.replace("Â¬", "\n").replace("¬", "\n"), ping=True)
 
 
 
