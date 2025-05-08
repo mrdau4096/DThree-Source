@@ -180,9 +180,9 @@ async def on_message(message):
 			await replyMessage(message, f"## *An error occurred;*\n{str(E)}\n-# *Please wait.*", ping=True)
 	
 	else:
+		await replyMessage(message, "Heard:" + messageData, ping=True)
 		userDisplayName, messageData = message.author.display_name, removeNonASCII(message.content.strip().lower())
 		await otherTasks(message, messageData, userDisplayName)
-		await replyMessage(message, "Heard", ping=True)
 
 
 
