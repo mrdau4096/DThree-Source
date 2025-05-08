@@ -1,4 +1,4 @@
-import discord, asyncio, random, importlib, os, subprocess, datetime, time, signal
+import discord, asyncio, random, importlib, os, subprocess, datetime, time
 from games.chess import checkChessGames, testImage
 from games.noughtsAndCrosses import checkNoughtsAndCrossesGames
 from exct.responses import checkReplies
@@ -19,141 +19,9 @@ intents.guilds = True
 intents.presences = True
 client = discord.Client(intents=intents)
 
-gameSuffixes = ("o&x", "n&c", "ttt", "tictactoe", "noughtsandcrosses", "chess")
 
 
-
-@client.event
-async def on_ready():
-	#Do something?
-	pass
-
-
-async def otherTasks(message, messageData, userDisplayName):
-	global D3StartTime, DTHREE_PUBLIC
-
-	"""Handles all other asynchronous tasks."""
-	spainFilePath = "/project/src/disk/data/wordsSinceSpanishInquisition.txt"
-	if os.path.exists(spainFilePath):
-		with open(spainFilePath, "r+") as spainFile:
-			lines = spainFile.readlines()
-			if len(lines) > 0:
-				wordsSinceSpanishInquisition = int(lines[0].strip())
-				wordsSinceSpanishInquisition += 1
-				if wordsSinceSpanishInquisition > 1023:
-					if random.randint(0, 1023) == 127:
-						await message.reply(file=discord.File("imgs/Inquisition.gif"), mention_author=True)
-						wordsSinceSpanishInquisition = 0
-			else:
-				#If file gets nuked again, repopulate it.
-				wordsSinceSpanishInquisition = 0
-			spainFile.write(str(wordsSinceSpanishInquisition))
-
-	else:
-		#If file gets nuked again, remake it.
-		with open(spainFilePath, "x") as spainFile:
-			spainFile.write("0")
-	
-
-	#Search with DDG.
-	if messageData.startswith("/whatis"):
-		await replyMessage(message, "Processing query.", ping=True)
-		query = messageData.replace("/whatis","").strip().lower()
-		results = lookUp(query)
-		if not results: #Empty or None.
-			await replyMessage(message, "No meaningful results were found.", ping=True)
-		else:
-			reply = f"## Query: {query}\n"
-			for title, url in results.items():
-				if "youtube.com" not in url.lower():
-					reply += f"- [{title}](<{url}>)\n"
-				else:
-					reply += f"- [{title}]({url}) *(YouTube link)*\n"
-			reply += "-# *Some results may not be relevant. Results were screened and had SafeSearch enabled while being processed. Please be responsible with your searches.*"
-			await replyMessage(message, reply, ping=True)
-
-
-
-	#Replace shabbles, handle games, memes, and economy
-	await checkReplies(messageData, message) #/ Commands and such.
-	await games.economy.econIterate(message, messageData) #/econ and related
-	await checkNoughtsAndCrossesGames(userDisplayName, messageData, message) #checks active ttt games and related stuff
-	await checkChessGames(userDisplayName, messageData, message) #checks active chess games and related stuff
-	#await testImage(message) #Debug chess function, probably unnecessary.
-	await browseMemes(userDisplayName, messageData, message) #/browse stuff.
-
-
-
-	if messageData.startswith("/challenge"):
-		if not any(gameSuffix in messageData for gameSuffix in gameSuffixes):
-			await message.channel.send(
-				f"You must pick one of the following games to challenge;\n"
-				f"{list(gameSuffixes[:4])} - Noughts & Crosses\n"
-				f"{[gameSuffixes[4],]} - chess"
-			)
-
-
-
-	if messageData.startswith("/updaterepo"):
-		await updateRepo(message=message)
-
-	elif messageData.startswith("/backupdata"):
-		await backupData()
-
-	elif messageData.startswith("/pulldata"):
-		await pullData()
-
-
-
-	elif messageData.startswith("/econ force-reload"):
-		importlib.reload(games.economy)
-
-
-
-	elif messageData.startswith("/uptime"):
-		currentTime = time.time()
-		uptime = currentTime - D3StartTime
-
-
-		days = int(uptime // 84600 % 365)
-		hours = int(uptime // 3600 % 24)
-		minutes = int(uptime // 60 % 60)
-		seconds = int(uptime % 60)
-		uptimeStr = ""
-		if days > 0:
-			uptimeStr += f"{days} days, "
-		if hours > 0 or days > 0:
-			uptimeStr += f"{hours} hours, "
-		if minutes > 0 or hours > 0 or days > 0:
-			uptimeStr += f"{minutes} minutes "
-		uptimeStr += f"{seconds} seconds."
-
-
-		timeSinceCreationStr = timeSinceStr("2024-09-01 08:00:00")
-
-		await replyMessage(message, f"DThree has been online for: {uptimeStr}\nTime since DThree was created: {timeSinceCreationStr}", ping=True)
-
-
-
-@client.event
-async def on_message(message):
-	if message.author == client.user:
-		return
-	if (not DTHREE_PUBLIC) and message.guild.name != "Dau's Repository":
-		return
-		
-	try:
-		userDisplayName, messageData = message.author.display_name, removeNonASCII(message.content.strip().lower())
-		await otherTasks(message, messageData, userDisplayName)
-	
-	except Exception as E:
-		print(f"\a\n{E}\n")
-		await replyMessage(message, f"## *An error occurred;*\n{str(E)}\n-# *Please wait.*", ping=True)
-
-
-
-
-
+#Background Tasks.
 def backupData():
 	dataDir = "/project/src/disk/data"
 	github_token = os.getenv("GITHUB_TOKEN")
@@ -201,18 +69,142 @@ async def backgroundActions(client):
 		print(e)
 
 
-"""
-async def handleShutdown(signum, frame):
-	global client
 
-	#Warn of shutdown.
-	await sendMessageInChannel(client, "Shutdown imminent; Either redeploy or manual termination.", "Dau's Repository", "dthree-space")
 
-	sys.exit(0)
 
-signal.signal(signal.SIGINT, handleShutdown)
-signal.signal(signal.SIGTERM, handleShutdown)
-"""
+
+@client.event
+async def on_ready():
+	#Do something?
+	pass
+
+
+async def otherTasks(message, messageData, userDisplayName):
+	global D3StartTime, DTHREE_PUBLIC
+
+	"""Handles all other asynchronous tasks."""
+	spainFilePath = "/project/src/disk/data/wordsSinceSpanishInquisition.txt"
+	if os.path.exists(spainFilePath):
+		with open(spainFilePath, "r+") as spainFile:
+			lines = spainFile.readlines()
+			if len(lines) > 0:
+				wordsSinceSpanishInquisition = int(lines[0].strip())
+				wordsSinceSpanishInquisition += 1
+				if wordsSinceSpanishInquisition > 1023:
+					if random.randint(0, 1023) == 127:
+						await message.reply(file=discord.File("imgs/Inquisition.gif"), mention_author=True)
+						wordsSinceSpanishInquisition = 0
+			else:
+				#If file gets nuked again, repopulate it.
+				wordsSinceSpanishInquisition = 0
+			spainFile.write(str(wordsSinceSpanishInquisition))
+
+	else:
+		#If file gets nuked again, remake it.
+		with open(spainFilePath, "x") as spainFile:
+			spainFile.write("0")
+
+
+
+	if messageData.startswith("/updaterepo"): #Update textfiles repo (pull)
+		await updateRepo(message=message)
+		return
+
+	elif messageData.startswith("/backupdata"): #Push data files to git repo
+		await backupData()
+		return
+
+	elif messageData.startswith("/pulldata"): #Pull data files from git repo
+		await pullData()
+		return
+
+
+
+	elif messageData.startswith("/econ force-reload"): #Force-reload econ.
+		importlib.reload(games.economy)
+		return
+
+
+
+	elif messageData.startswith("/uptime"): #Time DThree has been online for.
+		currentTime = time.time()
+		uptime = currentTime - D3StartTime
+
+
+		days = int(uptime // 84600 % 365)
+		hours = int(uptime // 3600 % 24)
+		minutes = int(uptime // 60 % 60)
+		seconds = int(uptime % 60)
+		uptimeStr = ""
+		if days > 0:
+			uptimeStr += f"{days} days, "
+		if hours > 0 or days > 0:
+			uptimeStr += f"{hours} hours, "
+		if minutes > 0 or hours > 0 or days > 0:
+			uptimeStr += f"{minutes} minutes "
+		uptimeStr += f"{seconds} seconds."
+
+
+		timeSinceCreationStr = timeSinceStr("2024-09-01 08:00:00")
+
+		await replyMessage(message, f"DThree has been online for: {uptimeStr}\nTime since DThree was created: {timeSinceCreationStr}", ping=True)
+		return
+	
+
+	elif messageData.startswith("/whatis"): #Search with DDG.
+		await replyMessage(message, "Processing query.", ping=True)
+		query = messageData.replace("/whatis","").strip().lower()
+		results = lookUp(query)
+		if not results: #Empty or None.
+			await replyMessage(message, "No meaningful results were found.", ping=True)
+		else:
+			reply = f"## Query: {query}\n"
+			for title, url in results.items():
+				if "youtube.com" not in url.lower():
+					reply += f"- [{title}](<{url}>)\n"
+				else:
+					reply += f"- [{title}]({url}) *(YouTube link)*\n"
+			reply += "-# *Some results may not be relevant. Results were screened and had SafeSearch enabled while being processed. Please be responsible with your searches.*"
+			await replyMessage(message, reply, ping=True)
+			return
+
+
+
+	#Replace shabbles, handle games, memes, and economy
+	await checkReplies(messageData, message) #/ Commands and such.
+	await games.economy.econIterate(message, messageData) #/econ and related
+	await checkNoughtsAndCrossesGames(userDisplayName, messageData, message) #checks active ttt games and related stuff
+	await checkChessGames(userDisplayName, messageData, message) #checks active chess games and related stuff
+	#await testImage(message) #Debug chess function, probably unnecessary.
+	await browseMemes(userDisplayName, messageData, message) #/browse stuff.
+
+
+
+	if messageData.startswith("/challenge"):
+		gameSuffixes = ("o&x", "n&c", "ttt", "tictactoe", "noughtsandcrosses", "chess")
+		if not any(gameSuffix in messageData for gameSuffix in gameSuffixes):
+			await message.channel.send(
+				f"You must pick one of the following games to challenge;\n"
+				f"{list(gameSuffixes[:4])} - Noughts & Crosses\n"
+				f"{[gameSuffixes[4],]} - chess"
+			)
+
+
+
+@client.event
+async def on_message(message):
+	if message.author == client.user:
+		return
+	if (not DTHREE_PUBLIC) and message.guild.name != "Dau's Repository":
+		return
+
+	try:
+		userDisplayName, messageData = message.author.display_name, removeNonASCII(message.content.strip().lower())
+		await otherTasks(message, messageData, userDisplayName)
+	
+	except Exception as E:
+		print(f"\a\n{E}\n")
+		await replyMessage(message, f"## *An error occurred;*\n{str(E)}\n-# *Please wait.*", ping=True)
 
 
 
