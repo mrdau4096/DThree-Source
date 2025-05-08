@@ -111,11 +111,13 @@ async def otherTasks(message, messageData, userDisplayName):
 		return
 
 	elif messageData.startswith("/backupdata"): #Push data files to git repo
-		await backupData()
+		backupData()
+		await replyMessage(message, "Successfully pushed data to repo.", ping=True)
 		return
 
 	elif messageData.startswith("/pulldata"): #Pull data files from git repo
-		await pullData()
+		pullData()
+		await replyMessage(message, "Successfully pulled data from repo.", ping=True)
 		return
 
 
