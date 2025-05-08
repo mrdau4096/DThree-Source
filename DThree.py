@@ -10,7 +10,7 @@ import games.economy
 global D3StartTime, DTHREE_PUBLIC, client
 
 #Use for testing the bot on Dau's Repository.
-DTHREE_PUBLIC = False
+DTHREE_PUBLIC = True
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -25,7 +25,8 @@ gameSuffixes = ("o&x", "n&c", "ttt", "tictactoe", "noughtsandcrosses", "chess")
 
 @client.event
 async def on_ready():
-	print(f"\rSigned in as user: {client.user}\nPlease input a command;\n> ", end="")
+	#Do something?
+	pass
 
 
 async def otherTasks(message, messageData, userDisplayName):
@@ -52,56 +53,10 @@ async def otherTasks(message, messageData, userDisplayName):
 		#If file gets nuked again, remake it.
 		with open(spainFilePath, "x") as spainFile:
 			spainFile.write("0")
+	
 
-	if messageData.startswith("/help"):
-		helpMessage = f"""
-## DThree Help;
-- There is an `/info` command for some basic info about DThree.
-
-### User-given commands
-{userCommands}
-
-### `/Browse` lets you browse memes. It sends a random one, when no sub-folders are found.
-- `/browse` shows all current files in that directory
-- `/browse folder-name` opens the folder, if found
-- `/back` goes back one directory level
-
-### Games commands
-- You may challenge another user to a game with the format `/challenge @user game`.
-- `game` must be replaced by a valid game ID (see list of IDs).
-- If you call `/challenge` without a valid game ID, you will be prompted to try again.
-- To play noughtsAndCrosses, you must use `/play X,Y` to place your type in the X-Y position.
-- In chess, you may use `/move X,Y X,Y` to move a piece from 1 place to another.
-- You may also use `/select X,Y` to get more information on a certain tile's occupant.
-- `/quit` quits the current game.
-
-### Others
-- /echo echoes the user's message (like cmdline)
-- The bot only runs when Dau runs the script on [device]. It may be offline.
-- The bot may restart for any reason, during testing.
-- Any error messages will be formatted clearly. Treat this as a restart, unless the bot indicates otherwise.
-
-*List of game IDs;*
-{list(gameSuffixes[:5])} - Noughts & Crosses.
-{[gameSuffixes[5],]} - chess.
-"""
-		await message.channel.send(helpMessage)
-		return
-
-	elif messageData.startswith("/info"):
-		infoMessage = f"""
-## DThree Info;
-- DThree can play multiple simple games from commands (see `/help` for more information).
-- DThree can automatically respond to messages of a certain type with randomised responses.
-- DThree was written entirely in Python, with the discord.py module for API calls.
-- DThree has successfully replaced 50% of shabbles#6353's functions (and only increasing).
-- ~~DThree uses art created by TornadoTeam (Mr T)#2963 for the chess game.~~ *(unconfirmed)*
-- DThree's original Noughts and Crosses game was entirely written in just 3 hours.
-- DThree was created by Dau#7446 at 01:30 because they were bored.
-		"""
-		await message.channel.send(infoMessage)
-		return
-	elif messageData.startswith("/whatis"):
+	#Search with DDG.
+	if messageData.startswith("/whatis"):
 		await replyMessage(message, "Processing query.", ping=True)
 		query = messageData.replace("/whatis","").strip().lower()
 		results = lookUp(query)
@@ -120,12 +75,12 @@ async def otherTasks(message, messageData, userDisplayName):
 
 
 	#Replace shabbles, handle games, memes, and economy
-	await checkReplies(messageData, message)
-	await games.economy.econIterate(message, messageData)
-	await checkNoughtsAndCrossesGames(userDisplayName, messageData, message)
-	await checkChessGames(userDisplayName, messageData, message)
-	await testImage(message)
-	await browseMemes(userDisplayName, messageData, message)
+	await checkReplies(messageData, message) #/ Commands and such.
+	await games.economy.econIterate(message, messageData) #/econ and related
+	await checkNoughtsAndCrossesGames(userDisplayName, messageData, message) #checks active ttt games and related stuff
+	await checkChessGames(userDisplayName, messageData, message) #checks active chess games and related stuff
+	#await testImage(message) #Debug chess function, probably unnecessary.
+	await browseMemes(userDisplayName, messageData, message) #/browse stuff.
 
 
 
@@ -141,6 +96,12 @@ async def otherTasks(message, messageData, userDisplayName):
 
 	if messageData.startswith("/updaterepo"):
 		await updateRepo(message=message)
+
+	elif messageData.startswith("/backupdata"):
+		await backupData()
+
+	elif messageData.startswith("/pulldata"):
+		await pullData()
 
 
 
