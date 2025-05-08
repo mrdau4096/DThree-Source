@@ -31,10 +31,6 @@ async def on_ready():
 async def otherTasks(message, messageData, userDisplayName):
 	global D3StartTime, DTHREE_PUBLIC
 
-	#Stop replies outside of Dau's Repository if ENV variable is set.
-	if (not DTHREE_PUBLIC) and message.guild.name != "Dau's Repository":
-		return
-
 	"""Handles all other asynchronous tasks."""
 	with open("/project/src/disk/data/wordsSinceSpanishInquisition.txt", "r") as spainFile:
 		wordsSinceSpanishInquisition = int(spainFile.readlines()[0].strip())
@@ -172,6 +168,8 @@ async def otherTasks(message, messageData, userDisplayName):
 async def on_message(message):
 	if message.author == client.user:
 		return
+	if (not DTHREE_PUBLIC) and message.guild.name != "Dau's Repository":
+		return
 	if DTHREE_PUBLIC:
 		try:
 			userDisplayName, messageData = message.author.display_name, removeNonASCII(message.content.strip().lower())
@@ -184,7 +182,8 @@ async def on_message(message):
 	else:
 		userDisplayName, messageData = message.author.display_name, removeNonASCII(message.content.strip().lower())
 		await otherTasks(message, messageData, userDisplayName)
-		
+		await replyMessage(message, "Heard", ping=True)
+
 
 
 
