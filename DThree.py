@@ -170,15 +170,15 @@ async def otherTasks(message, messageData, userDisplayName):
 
 @client.event
 async def on_message(message):
-	if message.author == client.user:
-		return
-	try:
+		if message.author == client.user:
+			return
+	#try:
 		userDisplayName, messageData = message.author.display_name, removeNonASCII(message.content.strip().lower())
 		await otherTasks(message, messageData, userDisplayName)
 	
-	except Exception as E:
-		print(f"\a\n{E}\n")
-		await replyMessage(message, f"## *An error occurred;*\n{str(E)}\n-# *Please wait.*", ping=True)
+	#except Exception as E:
+	#	print(f"\a\n{E}\n")
+	#	await replyMessage(message, f"## *An error occurred;*\n{str(E)}\n-# *Please wait.*", ping=True)
 
 
 
