@@ -170,7 +170,7 @@ async def on_message(message):
 		return
 	if (not DTHREE_PUBLIC) and message.guild.name != "Dau's Repository":
 		return
-	if DTHREE_PUBLIC:
+	if not DTHREE_PUBLIC:
 		try:
 			userDisplayName, messageData = message.author.display_name, removeNonASCII(message.content.strip().lower())
 			await otherTasks(message, messageData, userDisplayName)
