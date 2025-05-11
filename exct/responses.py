@@ -158,11 +158,11 @@ async def occurrences_saveGraph(word, message, filename="/project/src/disk/data/
 	plt.grid(True, which='both', linestyle='--', linewidth=0.7, color='gray')
 
 	#Save the plot as an image file
-	plt.savefig('imgs/graph.png')
+	plt.savefig('/project/src/disk/data/graph.png')
 	plt.close()
 
 	await sendMessage(message, f"Collating data for {word}")
-	await message.channel.send(file=discord.File("imgs/graph.png"))
+	await message.channel.send(file=discord.File("/project/src/disk/data/graph.png"))
 
 
 
@@ -377,7 +377,7 @@ def fish_saveGraph(filename):
 	plt.grid(True, which='both', linestyle='--', linewidth=0.7, color='gray')
 
 	#Save the plot as an image file
-	plt.savefig('imgs/graph.png')
+	plt.savefig('/project/src/disk/data/graph.png')
 	plt.close()
 
 
@@ -501,7 +501,7 @@ async def checkReplies(messageData, message):
 		"""
 		fish_saveGraph("fish")
 		await replyMessage(message, "Collating data;\nFish occurrences over time, per user")
-		await message.channel.send(file=discord.File("imgs/graph.png"))
+		await message.channel.send(file=discord.File("/project/src/disk/data/graph.png"))
 
 
 	#Temporarily removed due to annoyance
