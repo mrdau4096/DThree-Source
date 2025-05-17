@@ -92,7 +92,7 @@ async def otherTasks(message, messageData, userDisplayName):
 				wordsSinceSpanishInquisition += 1
 				if wordsSinceSpanishInquisition > 1023:
 					if (random.randint(0, 1023) == 127) or (wordsSinceSpanishInquisition > 2047):
-						await message.reply(file=discord.File("imgs/Inquisition.gif"), mention_author=True)
+						await message.reply(file=discord.File("/project/src/disk/data/Inquisition.gif"), mention_author=True)
 						wordsSinceSpanishInquisition = 0
 			else:
 				#If file gets nuked again, repopulate it.
