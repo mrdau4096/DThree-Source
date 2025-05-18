@@ -223,7 +223,7 @@ async def occurrencesSaveGraph(word: str, message: discord.Message, filename: st
 		else:
 			colour = "#FF00FF"
 
-		ax.plot(dates, counts, label=reformatName(name), color=colour)
+		ax.plot(dates, counts, label=reformatName(name, mpl=True), color=colour)
 
 
 	ax.set_title(f"Occurrences of {word}", color="white")
@@ -261,13 +261,16 @@ async def occurrencesSaveGraph(word: str, message: discord.Message, filename: st
 
 #Other
 
-def reformatName(name: str) -> str:
+def reformatName(name: str, mpl: bool=False) -> str:
 	r"""
 	Another hacky fix for my username (dau -> __dau__ -> \_\_dau\_\_)
 	The underscores cause issues with discord formatting.
 	Used in showTotalWords() and showLeaderboard().
 	"""
-	return name.replace("_", "\_")
+	reformatted = name.replace("_", "\_")
+	if mpl:
+		reformatted = f"${reformatted}$"
+	return reformatted
 
 
 def reformatNumber(value: int) -> str:
