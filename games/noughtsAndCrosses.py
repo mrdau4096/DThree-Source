@@ -2,19 +2,25 @@ import discord
 from exct.shared import sendMessage, replyMessage
 
 
-def inRange(x, lower, upper):
+def inRange(x: int|float, lower: int|float, upper: int|float) -> bool:
+	"""
+	Very useless one-line function kept for the sake of this file.
+	"""
 	return lower <= x <= upper
 
 class Board:
-	def __init__(self, blankSquare, xSquare, oSquare):
+	def __init__(self, blankSquare: str, xSquare: str, oSquare: str) -> None:
 		self.grid = [[blankSquare for _ in range(3)] for _ in range(3)]
 		self.players = {"X": None, "O": None}
 		self.styleInfo = {" ": blankSquare, "X": xSquare, "O": oSquare}
 		self.lastMove = "O"
 		self.won = False
 
-	async def setBoardSquare(self, user, position, message):
-		# Determine the user's symbol
+	async def setBoardSquare(self, user: discord.User|discord.Member, position: tuple[int, int], message: discord.Message) -> None:
+		"""
+		Plays in a certain square of the grid.
+		"""
+		#Determine the user's symbol
 		if user == self.players["X"]:
 			userTile = self.styleInfo["X"]
 			userType = "X"
@@ -25,7 +31,7 @@ class Board:
 			await sendMessage(message, "You are not assigned to a team.")
 			return
 
-		# Check if the position is within the grid range
+		#Check if the position is within the grid range
 		if inRange(position[0], 1, 3) and inRange(position[1], 1, 3):
 			gridLocation = self.grid[position[0] - 1][position[1] - 1]
 			if gridLocation == self.styleInfo[" "] and userType != self.lastMove:
@@ -46,11 +52,15 @@ class Board:
 		else:
 			reply = "Please enter a position value within range (1-3 inclusive)\n*Formatting: [/play X,Y]*"
 
-		# Send the reply back to the channel
+		#Send the reply back to the channel
 		await sendMessage(message, reply)
 
 
-	def checkForWin(self):
+	def checkForWin(self) -> None|str:
+		"""
+		Checks all possibilities for a winner. Returns None if none found.
+		If winner found, return a string to send to the users.
+		"""
 		for column in range(3):
 			result = self.checkLine([self.grid[row][column] for row in range(3)])
 			if result[1]:
@@ -79,7 +89,10 @@ class Board:
 
 
 
-	def strGrid(self):
+	def strGrid(self) -> str:
+		"""
+		Returns the grid, UTF-8 art-style formatted.
+		"""
 		return f"""
 `	1   2   3  `
 `  ╔═══╦═══╦═══╗`
@@ -92,7 +105,12 @@ class Board:
 		"""
 
 
-	def checkLine(self, line):
+	def checkLine(self, line: list[str, str, str]) -> tuple[str, bool]:
+		"""
+		Checks a given line for a winner, using a set.
+		Returns a congratulatory message if a player won, and True
+		Otherwise returns an empty string and False.
+		"""
 		if len(set(line)) == 1 and line[0] != self.styleInfo[" "]:
 			winningType = [key for key, value in self.styleInfo.items() if value == line[0]][0]
 			return f"{self.players[winningType].mention} ({winningType}) wins", True
@@ -103,17 +121,28 @@ pending_challenges = {}
 activeBoards = {}
 
 
-def forceEndAllTTT():
+def forceEndAllTTT() -> None:
+	"""
+	Forcefully ends all ongoing TTT games.
+	"""
 	IDs = list(activeBoards.keys())
 	for ID in IDs:
 		del activeBoards[ID]
 	print(f"Ended {len(IDs)} games.")
 
 
-async def checkNoughtsAndCrossesGames(userDisplayName, messageData, message):
+async def checkNoughtsAndCrossesGames(messageData: str, message: discord.Message) -> None:
+	"""
+	Checks if response is related to an ongoing game.
+	If so, checks validity.
+	If so, plays move, then checks for a winner.
+	If so, then tells players about winner and ends the ongoing game.
+	"""
 	global pending_challenges, activeBoards
 	
-	#Handle challenge command
+
+
+	#Handle challenge command [Calling for start of a game]
 	if messageData.startswith("/challenge") and (("o&x" in messageData) or ("n&c" in messageData) or ("ttt" in messageData) or ("tictactoe" in messageData) or ("noughtsandcrosses" in messageData)):
 		if len(message.mentions) != 1:
 			await sendMessage(message, "Please mention one user to challenge")
@@ -130,7 +159,9 @@ async def checkNoughtsAndCrossesGames(userDisplayName, messageData, message):
 		}
 		await sendMessage(message, f"{opponent.display_name}, you have been challenged by {message.author.display_name} to a match of `Noughts & Crosses`/ Type `/accept` to start the game or `/decline` to decline the challenge.")
 
-	#Handle accept command
+
+
+	#Handle accept command [Accepting starting a game]
 	if messageData.startswith("/accept"):
 		if message.author.id not in pending_challenges:
 			await sendMessage(message, "You don't have any pending challenges.")
@@ -148,7 +179,9 @@ async def checkNoughtsAndCrossesGames(userDisplayName, messageData, message):
 		await sendMessage(message, f"Game started between *{challenger.display_name} (X)* and *{message.author.display_name} (O)*\nUse `/play X,Y` to make your moves.\n*{challenger.display_name} (X) plays first*")
 		await message.channel.send(board.strGrid())
 
-	#Handle decline command
+
+
+	#Handle decline command [Declining starting a game]
 	if messageData.startswith("/decline"):
 		if message.author.id not in pending_challenges:
 			await sendMessage(message, "You don't have any pending challenges.")
@@ -160,7 +193,9 @@ async def checkNoughtsAndCrossesGames(userDisplayName, messageData, message):
 
 		await sendMessage(message, f"{message.author.display_name} has declined the challenge from {challenger.display_name}.")
 
-	#Handle play command
+
+
+	#Handle play command [Player making a move in an ongoing game]
 	if messageData.startswith("/play"):
 		if message.channel.id not in activeBoards:
 			await sendMessage(message, "There are no active games in this channel. Start a new game with `/challenge @user`.")
@@ -197,6 +232,9 @@ async def checkNoughtsAndCrossesGames(userDisplayName, messageData, message):
 		except (IndexError, ValueError, TypeError):
 			await sendMessage(message, "Invalid format. Use `/play X,Y`.")
 
+
+
+	#Handle quit command [Exiting match, forfeit.]
 	if messageData.startswith("/quit"):
 		game_found = False
 		for channelID, board in list(activeBoards.items()):
@@ -209,6 +247,8 @@ async def checkNoughtsAndCrossesGames(userDisplayName, messageData, message):
 
 		if not game_found:
 			await sendMessage(message, f"{message.author.display_name}, you are not in a game.")
+
+
 
 	#Cleanup ended games
 	for channelID, board in list(activeBoards.items()):

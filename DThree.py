@@ -4,10 +4,12 @@ from games.noughtsAndCrosses import checkNoughtsAndCrossesGames
 from exct.responses import checkReplies
 from exct.memeBrowse import browseMemes
 from exct.webSearch import lookUp
-from exct.shared import removeNonASCII, getTime, updateRepo, sendMessage, replyMessage, timeSinceStr, sendMessageInChannel
+from exct.shared import removeNonASCII, getTime, sendMessage, replyMessage, timeSinceStr, sendMessageInChannel
+from exct.shared import pullData, backupData, updateRepo
 import games.economy
 
 global D3StartTime, DTHREE_PUBLIC, client
+
 
 #Use for testing the bot on Dau's Repository.
 DTHREE_PUBLIC = True
@@ -22,47 +24,19 @@ client = discord.Client(intents=intents)
 
 
 #Background Tasks.
-def backupData():
-	dataDir = "/project/src/disk/data"
-	github_token = os.getenv("GITHUB_TOKEN")
-	repo_url = f"https://{github_token}@github.com/mrdau4096/DThree-Data-Backups.git"
-
-	if not os.path.exists(os.path.join(dataDir, ".git")): #Ensure folder is a valid git repo location
-		subprocess.run(["git", "init"], cwd=dataDir)
-		subprocess.run(["git", "remote", "add", "origin", repo_url], cwd=dataDir)
-
-	subprocess.run(["git", "config", "user.email", "d3@render.com"], cwd=dataDir)
-	subprocess.run(["git", "config", "user.name", "DThree"], cwd=dataDir)
-
-	subprocess.run(["git", "add", "."], cwd=dataDir)
-	subprocess.run(["git", "commit", "-m", f"{datetime.datetime.now()}"], cwd=dataDir)
-	subprocess.run(["git", "branch", "-M", "main"], cwd=dataDir)
-	subprocess.run(["git", "push", "-u", "origin", "main"], cwd=dataDir)
-
-def pullData():
-	dataDir = "/project/src/disk/data"
-	github_token = os.getenv("GITHUB_TOKEN")
-	repo_url = f"https://{github_token}@github.com/mrdau4096/DThree-Data-Backups.git"
-
-	if not os.path.exists(os.path.join(dataDir, ".git")): #Ensure folder is a valid git repo location
-		subprocess.run(["git", "init"], cwd=dataDir)
-		subprocess.run(["git", "remote", "add", "origin", repo_url], cwd=dataDir)
-
-	subprocess.run(["git", "pull", "origin", "main"], cwd=dataDir)
-
-
-async def backgroundActions(client):
+async def backgroundActions(client: discord.Client) -> None:
 	global D3StartTime
 	D3StartTime = time.time()
 	try:
-		pullData()	
+		pullData() #Get latest datafiles.
 		while True:
-			await asyncio.sleep(3600) #60*60, 1 hour.
+			await asyncio.sleep(3600) #60*60s, 1 hour.
 			backupData() #Backup /project/src/disk/data/
 	except Exception as e:
+		#Send background errors to testing server.
 		await sendMessageInChannel(
 			client,
-			f"# Error occurred in background actions: {e}\n-# @663451560465924097",
+			f"# Error occurred in background actions: {e}\n-# @663451560465924097", #Pings __dau__
 			"Dau's Repository",
 			"bot-testing"
 		)
@@ -74,12 +48,12 @@ async def backgroundActions(client):
 
 
 @client.event
-async def on_ready():
-	#Do something?
+async def on_ready() -> None:
+	#Should it do something when deployed?
 	pass
 
 
-async def otherTasks(message, messageData, userDisplayName):
+async def otherTasks(message: discord.Message, messageData: str) -> None:
 	global D3StartTime, DTHREE_PUBLIC
 
 	"""Handles all other asynchronous tasks."""
@@ -95,14 +69,14 @@ async def otherTasks(message, messageData, userDisplayName):
 						await message.reply(file=discord.File("/project/src/disk/data/Inquisition.gif"), mention_author=True)
 						wordsSinceSpanishInquisition = 0
 			else:
-				#If file gets nuked again, repopulate it.
+				#If file gets OBLITERATED again, repopulate it.
 				wordsSinceSpanishInquisition = 0
 
 		with open(spainFilePath, "w") as spainFile:
 			spainFile.write(str(wordsSinceSpanishInquisition))
 
 	else:
-		#If file gets nuked again, remake it.
+		#If file gets OBLITERATED again, remake it.
 		with open(spainFilePath, "x") as spainFile:
 			spainFile.write("0")
 
@@ -156,6 +130,7 @@ async def otherTasks(message, messageData, userDisplayName):
 	
 
 	elif messageData.startswith("/whatis"): #Search with DDG.
+		#Youtube results can embed; Others cannot.
 		await replyMessage(message, "Processing query.", ping=True)
 		query = messageData.replace("/whatis","").strip().lower()
 		results = lookUp(query)
@@ -174,45 +149,36 @@ async def otherTasks(message, messageData, userDisplayName):
 
 
 
-	#Replace shabbles, handle games, memes, and economy
-	await checkReplies(messageData, message) #/ Commands and such.
-	await games.economy.econIterate(message, messageData) #/econ and related
-	await checkNoughtsAndCrossesGames(userDisplayName, messageData, message) #checks active ttt games and related stuff
-	await checkChessGames(userDisplayName, messageData, message) #checks active chess games and related stuff
+	await checkReplies(messageData, message) #"/" Commands and such.
+	await games.economy.econIterate(message, messageData) #/econ and related functions.
+	await checkNoughtsAndCrossesGames(messageData, message) #Checks active ttt games.
+	#await checkChessGames(userDisplayName, messageData, message) #Checks active chess games. Disabled as chess is still unfinished after 9 months (18/05/2025).
 	#await testImage(message) #Debug chess function, probably unnecessary.
-	await browseMemes(userDisplayName, messageData, message) #/browse stuff.
+	await browseMemes(messageData, message) #Functions for "/browse".
 
-
-
-	if messageData.startswith("/challenge"):
-		gameSuffixes = ("o&x", "n&c", "ttt", "tictactoe", "noughtsandcrosses", "chess")
-		if not any(gameSuffix in messageData for gameSuffix in gameSuffixes):
-			await message.channel.send(
-				f"You must pick one of the following games to challenge;\n"
-				f"{list(gameSuffixes[:4])} - Noughts & Crosses\n"
-				f"{[gameSuffixes[4],]} - chess"
-			)
 
 
 
 @client.event
-async def on_message(message):
+async def on_message(message: discord.Message) -> None:
 	if message.author == client.user:
 		return
 	if (not DTHREE_PUBLIC) and message.guild.name != "Dau's Repository":
+		#Stop replies in non-testing server if [not DTHREE_PUBLIC].
 		return
 
 	try:
-		userDisplayName, messageData = message.author.display_name, removeNonASCII(message.content.strip().lower())
-		await otherTasks(message, messageData, userDisplayName)
+		messageData = message.author.display_name, removeNonASCII(message.content.strip().lower())
+		await otherTasks(message, messageData)
 	
 	except Exception as E:
+		#Handle errors gracefully.
 		print(f"\a\n{E}\n")
 		await replyMessage(message, f"## *An error occurred;*\n{str(E)}\n-# *Please wait.*", ping=True)
 
 
 
-async def main(token):
+async def main(token: str) -> None:
 	bgTask = asyncio.create_task(backgroundActions(client))
 	DThreeTask = asyncio.create_task(client.start(token))
 	await asyncio.gather(bgTask, DThreeTask)
