@@ -151,7 +151,6 @@ def pullData() -> None:
 def removeNonASCII(text: str) -> str:
 	"""
 	Removes all non-ASCII characters from a string.
-	Now unused as far as I am aware.
 	"""
 	return ''.join(char for char in text if ord(char) < 128)
 

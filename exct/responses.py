@@ -34,7 +34,7 @@ async def choiceCommand(messageData: str, message: discord.Message, fileName: st
 	if fileName not in previousChoices:
 		previousChoices[fileName] = [] #Attempts to send a unique line each time.
 
-	if messageData. startswith(f"/{fileName}"):
+	if messageData.startswith(f"/{fileName}"):
 		with open(f"/opt/render/project/src/textFiles/phrases/{fileName}.txt", "r", encoding="utf-8") as file:
 			fileData = file.readlines()
 			fileData = [line.strip() for line in fileData]

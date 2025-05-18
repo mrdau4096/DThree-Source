@@ -12,7 +12,7 @@ global D3StartTime, DTHREE_PUBLIC, client
 
 
 #Use for testing the bot on Dau's Repository.
-DTHREE_PUBLIC = True
+DTHREE_PUBLIC = False
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -183,7 +183,8 @@ async def main(token: str) -> None:
 	DThreeTask = asyncio.create_task(client.start(token))
 	await asyncio.gather(bgTask, DThreeTask)
 
-# Start everything
+
+#Start everything
 if __name__ == "__main__":
 	token = os.getenv("BOT_TOKEN")
 	asyncio.run(main(token))
