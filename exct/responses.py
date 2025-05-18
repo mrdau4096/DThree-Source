@@ -187,7 +187,7 @@ async def occurrencesSaveGraph(word: str, message: discord.Message, filename: st
 		"boogie152": "#f1f0a1",
 		"meltedpuddingwx": "#526b77",
 		"ultrawolk": "#3498db",
-		"worldofrice": "#41777c",
+		"worldofrice": "#0239eb",
 		"brtrainfan46": "#ffffff",
 		"dalt7744": "#f1f0a1",
 		"howitzertwo587": "#f1f0a1",
