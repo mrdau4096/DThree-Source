@@ -53,14 +53,11 @@ class ChessBoard:
 		self.populate_board()
 
 	def populate_board(self):
-		# Add all pieces to the board in their initial positions
 		for i in range(8):
 			self.grid[i][1] = pawn(coord(i, 1), "white")
 			self.grid[i][6] = pawn(coord(i, 6), "black")
-		# Place rooks, knights, bishops, etc.
-		# Example: self.grid[0][0] = rook(coord(0, 0), "white")
 
-	def get_piece_at(self, position):
+	def getPieceAt(self, position):
 		return self.grid[position.x][position.y]
 
 	def update_piece_position(self, piece, startPos, endPos):
@@ -185,7 +182,6 @@ class knight(chessPiece):
 		super().__init__(pos, team)
 		
 	def move(self, newPos, grid):
-		# Knights move in an L-shape: 2 squares in one direction, then 1 square perpendicular
 		dx = abs(newPos.x - self.pos.x)
 		dy = abs(newPos.y - self.pos.y)
 		if (dx, dy) in [(1, 2), (2, 1)]:
@@ -207,7 +203,6 @@ class queen(chessPiece):
 		super().__init__(pos, team)
 		
 	def move(self, newPos, grid):
-		# Queens move like a rook or a bishop
 		if self.pos.x == newPos.x or self.pos.y == newPos.y or abs(self.pos.x - newPos.x) == abs(self.pos.y - newPos.y):
 			furthestPoint = self.checkLine(grid, self.pos, newPos)
 			if furthestPoint != self.pos:
@@ -218,7 +213,6 @@ class king(chessPiece):
 		super().__init__(pos, team)
 		
 	def move(self, newPos, grid):
-		# Kings move one square in any direction
 		dx = abs(newPos.x - self.pos.x)
 		dy = abs(newPos.y - self.pos.y)
 		if dx <= 1 and dy <= 1:
@@ -229,7 +223,7 @@ class king(chessPiece):
 async def checkChessGames(userDisplayName, messageData, message):
 	global pending_challenges, activeBoards
 
-	# Check /move command
+	#Check /move command
 	if messageData.lower().startswith("/move"):
 		try:
 			_, start, end = messageData.split()
@@ -244,12 +238,12 @@ async def checkChessGames(userDisplayName, messageData, message):
 				await message.channel.send("No active game in this channel.")
 				return
 
-			piece = board.get_piece_at(startPos)
+			piece = board.getPieceAt(startPos)
 			if not piece:
 				await message.channel.send(f"No piece at {startX},{startY}.")
 				return
 
-			if piece.team != get_user_team(userDisplayName):
+			if piece.team != getUserTeam(userDisplayName):
 				await message.channel.send(f"You can only move your own pieces.")
 				return
 
@@ -262,12 +256,13 @@ async def checkChessGames(userDisplayName, messageData, message):
 		except ValueError:
 			await message.channel.send("Invalid command format. Use /move X,Y Z,W")
 
-def get_user_team(userDisplayName):
-	# Determine user's team based on their role in the game.
-	# Placeholder function; you'll need to implement team assignment.
+def getUserTeam(userDisplayName):
+	#Determine user's team based on their role in the game.
+	#Needs to be implemented.
 	pass
 
 
+#Debug function
 async def testImage(message):
 	global initialBoard
 	messageData = message.content.strip().lower()
@@ -282,8 +277,8 @@ async def testImage(message):
 						team = 0 if False else 1 #Add teams later
 						drawImg(surface, "sheet-1.png", (X*128, Y*128), (128, 128), sheetPos=f"{team}{tile}")
 			PG.display.flip()
-			PG.image.save(surface, "imgs\\board.png")
-			await message.channel.send(file=discord.File("imgs\\board.png"))
+			PG.image.save(surface, "imgs/board.png")
+			await message.channel.send(file=discord.File("imgs/board.png"))
 
 
 
@@ -292,8 +287,8 @@ async def testImage(message):
 			drawImg(surface, "test.png", (0, 0), (128, 128))
 			drawImg(surface, "sheet-1.png", (128, 0), (128, 128), sheetPos="15")
 			PG.display.flip()
-			PG.image.save(surface, "imgs\\board.png")
-			await message.channel.send(file=discord.File("imgs\\board.png"))
+			PG.image.save(surface, "imgs/board.png")
+			await message.channel.send(file=discord.File("imgs/board.png"))
 
 
 
@@ -309,14 +304,17 @@ def drawBoard(surface):
 
 
 def drawText(SCREEN, TEXT, POSITION, FONT_SIZE, COLOUR=(255, 255, 255)):
-	raise ValueError("No font in filepath.")
+	raise ValueError("No font in filepath.") #Unsure why this is here.
 	#Draws text on a given surface, with colour, size and position.
-	FONT = PG.font.Font('data\\PressStart2P-Regular.ttf', FONT_SIZE)
+	#Taken from older project.
+	FONT = PG.font.Font('data/PressStart2P-Regular.ttf', FONT_SIZE)
 	text_surface = FONT.render(str(TEXT), True, COLOUR)
 	SCREEN.blit(text_surface, POSITION)
 
+
 def drawImg(surface, filename, position, scale, sheetPos=None):
 	#Draws an image loaded from the file structure (in \src\imgs\) to a position and with scale.
+	#Taken from older project.
 	img = PG.image.load(f"imgs\\{filename}")
 	w,h = img.get_width(), img.get_height()
 
@@ -328,7 +326,7 @@ def drawImg(surface, filename, position, scale, sheetPos=None):
 			w/16, h/16
 		)
 
-		# Extract the image section using subsurface
+		#Extract the image section using subsurface
 		imgSection = img.subsurface(sheetRect)
 
 
