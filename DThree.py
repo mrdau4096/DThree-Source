@@ -168,8 +168,7 @@ async def on_message(message: discord.Message) -> None:
 		return
 
 	try:
-		messageData = message.author.display_name, removeNonASCII(message.content.strip().lower())
-		await otherTasks(message, messageData)
+		await otherTasks(message, removeNonASCII(message.content.strip().lower()))
 	
 	except Exception as E:
 		#Handle errors gracefully.
