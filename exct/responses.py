@@ -4,6 +4,7 @@ import matplotlib
 matplotlib.use("Agg") #Matplotlib config. Writes to file rather than attempting to render onscreen.
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+from cycler import cycler
 import pandas as pd
 import numpy as np
 from exct.shared import sendMessage, replyMessage, getTime, timeSinceStr, secondsSince
@@ -175,6 +176,24 @@ async def occurrencesSaveGraph(word: str, message: discord.Message, filename: st
 	plt.gca().cla()
 
 
+	nameColours = {
+		"__dau__": "#b22225",
+		"tornadoteam_the_t": "#860897",
+		"themightyhowitzer": "#117b66",
+		"hamez_boi": "#c27c0e",
+		"randomuser78": "#72b0db",
+		"shabbles": "#63d4b2",
+		"boogie152": "#f1f0a1",
+		"meltedpuddingwx": "#526b77",
+		"ultrawolk": "#3498db",
+		"worldofrice": "#41777c",
+		"brtrainfan46": "#ffffff",
+		"dalt7744": "#f1f0a1",
+		"howitzertwo587": "#f1f0a1",
+		"duckson1124": "#ffffff"
+	}
+
+
 	#Read and preprocess the data
 	data, earliestDate, latestDate = occurrencesPreProcessing(
 		filename,
@@ -190,16 +209,20 @@ async def occurrencesSaveGraph(word: str, message: discord.Message, filename: st
 
 	fig, ax = plt.subplots(
 		figsize=(10, 6), dpi=150,
-		facecolor="black"
+		facecolor="#201c1c"
 	)
-	ax.set_facecolor("black")
+	ax.set_facecolor("#201c1c")
 
 
 
 	for name, series in data.items():
 		dates = list(series.keys())
 		counts = list(series.values())
-		ax.plot(dates, counts, label=name, color="white")
+		colour = nameColours.get(name, None)
+		if colour is None:
+			colour = next(ax._get_lines.prop_cycler)['color']
+
+		ax.plot(dates, counts, label=name, color=colour)
 
 
 	ax.set_title(f"Occurrences of {word}", color="white")
@@ -208,7 +231,7 @@ async def occurrencesSaveGraph(word: str, message: discord.Message, filename: st
 	ax.tick_params(colors="white")
 
 
-	ax.legend(loc="best", facecolor="black", edgecolor="white", labelcolor="white")
+	ax.legend(loc="best", facecolor="#201c1c", edgecolor="white", labelcolor="white")
 
 
 	ax.xaxis.set_major_formatter(mdates.DateFormatter("%d/%m/%y"))
