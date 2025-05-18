@@ -176,7 +176,10 @@ async def occurrencesSaveGraph(word: str, message: discord.Message, filename: st
 
 
 	#Read and preprocess the data
-	data, earliestDate, latestDate = occurrencesPreProcessing(filename, word.strip().replace("\n","`").lower())
+	data, earliestDate, latestDate = occurrencesPreProcessing(
+		filename
+		word.strip().replace("\n","`").lower()
+	)
 
 	if data is None and earliestDate is None and latestDate is None:
 		#Pre-processing could not find any relevant data for any user.
@@ -184,39 +187,46 @@ async def occurrencesSaveGraph(word: str, message: discord.Message, filename: st
 		return
 
 
-	#Plot each user's data on the graph with matplotlib.
-	for name, entries in data.items():
-		dates = [date for date, _ in entries.items()]
-		occurrences = list(entries.values())
 
-		plt.plot(dates, occurrences, label=name.replace("__dau__", r"$\_\_dau\_\_$"))
-		#Hacky fix for my username (dau) - underscores caused name to be treated as private and would not show on key.
-		#Extra formatting allows it to, although it is italic. Consider fixing.
+	fig, ax = plt.subplots(
+		figsize=(10, 6), dpi=150,
+		facecolor="black"
+	)
+	ax.set_facecolor("black")
 
 
-	#Plot settings
-	plt.xlabel('Date')
-	plt.ylabel('Occurrences')
-	plt.title(f'Occurrences of {word} over time, per user')
-	plt.legend()
 
-	plt.xlim(left=sept1, right=today)
-	plt.ylim(bottom=0)
-	plt.gca().yaxis.get_major_locator().set_params(integer=True)
-	plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%d/%m/%y'))
+	for name, series in data.items():
+		dates = list(series.keys())
+		counts = list(series.values())
+		ax.plot(dates, counts, label=name, color="white")
 
-	dateRange = latestDate - sept1
-	plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=1))
+
+	ax.set_title(f"Occurrences of {word}", color="white")
+	ax.set_xlabel("Date", color="white")
+	ax.set_ylabel("Occurrences", color="white")
+	ax.tick_params(colors="white")
+
+
+	ax.legend(loc="best", facecolor="black", edgecolor="white", labelcolor="white")
+
+
+	ax.xaxis.set_major_formatter(mdates.DateFormatter("%d/%m/%y"))
+	ax.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
 	#Dates are displayed on the X-Axis in 1 month intervals.
 	#As time progresses, this may need to be increased or adapted - too many dates will show with enough time passing.
+	fig.autofmt_xdate()
 
-	#Formatting.
-	plt.gcf().autofmt_xdate()
-	plt.grid(True, which='both', linestyle='--', linewidth=0.7, color='gray')
 
-	#Save the plot as an image file
-	plt.savefig('/project/src/disk/data/graph.png')
-	plt.close()
+	ax.grid(True, linestyle="--", linewidth=0.5, color="gray")
+
+	# Save
+	fig.savefig(
+		"/project/src/disk/data/graph.png",
+		facecolor=fig.get_facecolor(),
+		transparent=False
+	)
+	plt.close(fig)
 
 
 	await sendMessage(message, f"Collating data for {word}")
