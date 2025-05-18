@@ -4,6 +4,7 @@ import matplotlib
 matplotlib.use("Agg") #Matplotlib config. Writes to file rather than attempting to render onscreen.
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import matplotlib.ticker as mticker
 from cycler import cycler
 import pandas as pd
 import numpy as np
@@ -202,7 +203,7 @@ async def occurrencesSaveGraph(word: str, message: discord.Message, filename: st
 
 	if data is None and earliestDate is None and latestDate is None:
 		#Pre-processing could not find any relevant data for any user.
-		await sendMessage(message, f"No occurrences of '{word}' found.")
+		await sendMessage(message, f'No occurrences of "{word}" found.')
 		return
 
 
@@ -239,6 +240,7 @@ async def occurrencesSaveGraph(word: str, message: discord.Message, filename: st
 	ax.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
 	#Dates are displayed on the X-Axis in 1 month intervals.
 	#As time progresses, this may need to be increased or adapted - too many dates will show with enough time passing.
+	ax.yaxis.set_major_locator(mticker.MaxNLocator(integer=True))
 	fig.autofmt_xdate()
 
 
@@ -253,7 +255,7 @@ async def occurrencesSaveGraph(word: str, message: discord.Message, filename: st
 	plt.close(fig)
 
 
-	await sendMessage(message, f"Collating data for {word}")
+	await sendMessage(message, f'Collating data for "{word}"')
 	await message.channel.send(file=discord.File("/project/src/disk/data/graph.png"))
 	#If multiple people request a graph simultaneously; it gets overwritten. Consider fixing.
 
