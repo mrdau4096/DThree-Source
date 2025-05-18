@@ -209,9 +209,9 @@ async def occurrencesSaveGraph(word: str, message: discord.Message, filename: st
 
 	fig, ax = plt.subplots(
 		figsize=(10, 6), dpi=150,
-		facecolor="#201c1c"
+		facecolor="#1a1a1e"
 	)
-	ax.set_facecolor("#201c1c")
+	ax.set_facecolor("#1a1a1e")
 
 
 
@@ -223,7 +223,7 @@ async def occurrencesSaveGraph(word: str, message: discord.Message, filename: st
 		else:
 			colour = "#FF00FF"
 
-		ax.plot(dates, counts, label=name, color=colour)
+		ax.plot(dates, counts, label=reformatName(name), color=colour)
 
 
 	ax.set_title(f"Occurrences of {word}", color="white")
@@ -232,7 +232,7 @@ async def occurrencesSaveGraph(word: str, message: discord.Message, filename: st
 	ax.tick_params(colors="white")
 
 
-	ax.legend(loc="best", facecolor="#201c1c", edgecolor="white", labelcolor="white")
+	ax.legend(loc="best", facecolor="#1a1a1e", edgecolor="white", labelcolor="white")
 
 
 	ax.xaxis.set_major_formatter(mdates.DateFormatter("%d/%m/%y"))
