@@ -232,7 +232,7 @@ async def occurrencesSaveGraph(word: str, message: discord.Message, filename: st
 	ax.tick_params(colors="white")
 
 
-	ax.legend(loc="best", facecolor="#1a1a1e", edgecolor="white", labelcolor="white")
+	ax.legend(loc="upper right", facecolor="#1a1a1e", edgecolor="white", labelcolor="white")
 
 
 	ax.xaxis.set_major_formatter(mdates.DateFormatter("%d/%m/%y"))
