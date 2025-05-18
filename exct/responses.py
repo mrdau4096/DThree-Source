@@ -190,7 +190,7 @@ async def occurrencesSaveGraph(word: str, message: discord.Message, filename: st
 		"brtrainfan46": "#ffffff",
 		"dalt7744": "#f1f0a1",
 		"howitzertwo587": "#f1f0a1",
-		"duckson1124": "#ffffff"
+		"duckson1124": "#ffffff",
 	}
 
 
@@ -218,9 +218,10 @@ async def occurrencesSaveGraph(word: str, message: discord.Message, filename: st
 	for name, series in data.items():
 		dates = list(series.keys())
 		counts = list(series.values())
-		colour = nameColours.get(name, None)
-		if colour is None:
-			colour = next(ax._get_lines.prop_cycler)['color']
+		if name in nameColours:
+			colour = nameColours[name]
+		else:
+			colour = ax._get_lines.prop_cycler()
 
 		ax.plot(dates, counts, label=name, color=colour)
 
