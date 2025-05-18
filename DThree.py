@@ -12,7 +12,7 @@ global D3StartTime, DTHREE_PUBLIC, client
 
 
 #Use for testing the bot on Dau's Repository.
-DTHREE_PUBLIC = False
+DTHREE_PUBLIC = True
 
 intents = discord.Intents.default()
 intents.message_content = True
