@@ -177,7 +177,7 @@ async def occurrencesSaveGraph(word: str, message: discord.Message, filename: st
 
 	#Read and preprocess the data
 	data, earliestDate, latestDate = occurrencesPreProcessing(
-		filename
+		filename,
 		word.strip().replace("\n","`").lower()
 	)
 
