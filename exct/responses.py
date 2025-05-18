@@ -94,6 +94,14 @@ def occurrencesUpdOccurrences(name: str, words: list[str], filename: str="/proje
 		#If the file does not exist; create it.
 		df = pd.DataFrame(columns=["Name", "Word", "Date", "Occurrences"])
 
+	#Clean data
+	df["Name"] = df["Name"].astype(str).str.strip().str.lower()
+	df["Word"] = df["Word"].astype(str).str.strip().str.lower()
+	df["Date"] = df["Date"].astype(str).str.strip()
+	name = name.strip().lower()
+	date = datetime.datetime.now().strftime("%Y-%m-%d")
+	words = [word.strip().lower().replace("\n", "`") for word in words]
+
 	df["Occurrences"] = df["Occurrences"].astype("Int64")
 
 	keyMask = (df["Name"] == name) & (df["Date"] == date)
@@ -111,6 +119,7 @@ def occurrencesUpdOccurrences(name: str, words: list[str], filename: str="/proje
 	if updatedRows:
 		df = pd.concat([df, pd.DataFrame(updatedRows)], ignore_index=True)
 
+	df = df.groupby(["Name", "Word", "Date"], as_index=False).agg({"Occurrences": "sum"})
 	df.to_csv(filename, index=False)
 
 
