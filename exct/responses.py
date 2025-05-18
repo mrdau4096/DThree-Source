@@ -221,7 +221,7 @@ async def occurrencesSaveGraph(word: str, message: discord.Message, filename: st
 		if name in nameColours:
 			colour = nameColours[name]
 		else:
-			colour = ax._get_lines.prop_cycler()
+			colour = "#FF00FF"
 
 		ax.plot(dates, counts, label=name, color=colour)
 
