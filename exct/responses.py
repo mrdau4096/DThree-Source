@@ -100,6 +100,7 @@ def occurrencesUpdOccurrences(name: str, words: list[str], filename: str="/proje
 
 	updatedRows = []
 	for word in words:
+		if word == "": continue
 		existingRow = df[keyMask & (df["Word"] == word)]
 		
 		if not existingRow.empty:
