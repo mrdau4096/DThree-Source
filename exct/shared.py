@@ -144,7 +144,9 @@ def pullData() -> None:
 		subprocess.run(["git", "init"], cwd=dataDir)
 		subprocess.run(["git", "remote", "add", "origin", repo_url], cwd=dataDir)
 
-	subprocess.run(["git", "pull", "origin", "main"], cwd=dataDir)
+	else:
+		subprocess.run(["git", "fetch", "origin", "main"], cwd=dataDir)
+		subprocess.run(["git", "reset", "--hard", "origin/main"], cwd=dataDir)
 
 
 
