@@ -267,7 +267,7 @@ def reformatName(name: str) -> str:
 	The underscores cause issues with discord formatting.
 	Used in showTotalWords() and showLeaderboard().
 	"""
-	return name.replace("_", r"\_")
+	return name.replace("_", "\_")
 
 
 def reformatNumber(value: int) -> str:
