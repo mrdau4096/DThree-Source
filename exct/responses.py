@@ -562,4 +562,7 @@ async def checkReplies(messageData: str, message: discord.Message) -> None:
 		kill = 1
 		await sendMessage(message, "disarmed")
 
+	if messageData.startswith(("horny", "sex", "erotic")):
+		await sendMessage(message, "#howitzers-corner-thing")
+
 
