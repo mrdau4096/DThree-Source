@@ -542,25 +542,21 @@ async def checkReplies(messageData: str, message: discord.Message) -> None:
 
 	if messageData.startswith("/arm"):
 		await sendMessage(message, "armed")
-		kill = 0
 
-	if messageData.startswith("boom"):
-		await sendMessage(message, "10")
-		await sendMessage(message, "9")
-		await sendMessage(message, "8")
-		await sendMessage(message, "7")
-		await sendMessage(message, "6")
-		await sendMessage(message, "5")
-		await sendMessage(message, "4")
-		await sendMessage(message, "3")
-		await sendMessage(message, "2")
-		await sendMessage(message, "1")
-		while kill == 0:
-			await sendMessage(message, "explosion")
+		if messageData.startswith("boom"):
+			await sendMessage(message, "10")
+			await sendMessage(message, "9")
+			await sendMessage(message, "8")
+			await sendMessage(message, "7")
+			await sendMessage(message, "6")
+			await sendMessage(message, "5")
+			await sendMessage(message, "4")
+			await sendMessage(message, "3")
+			await sendMessage(message, "2")
+			await sendMessage(message, "1")
+			while 1>0:
+				await sendMessage(message, "explosion")
 
-	if messageData.startswith("kill"):
-		kill = 1
-		await sendMessage(message, "disarmed")
 
 	if messageData.startswith(("horny", "sex", "erotic")):
 		await sendMessage(message, "#howitzers-corner-thing")
