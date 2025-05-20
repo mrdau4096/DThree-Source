@@ -543,9 +543,6 @@ async def checkReplies(messageData: str, message: discord.Message) -> None:
 	if messageData.startswith(("horny", "sex", "erotic")):
 		await sendMessage(message, "#howitzers-corner-thing")
 
-	if messageData.startswith("@un-pingable", "@DThree#3744"):
-		await sendMessage(message, "hello!")
-
 	if messageData.startswith("whant"):
 		await sendMessage(message, "want")
 
