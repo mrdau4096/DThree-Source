@@ -10,7 +10,7 @@ import pandas as pd
 import numpy as np
 from exct.shared import sendMessage, replyMessage, getTime, timeSinceStr, secondsSince
 
-kill = False
+kill = 0
 
 
 global invalidDates
@@ -542,7 +542,7 @@ async def checkReplies(messageData: str, message: discord.Message) -> None:
 
 	if messageData.startswith("/arm"):
 		await sendMessage(message, "armed")
-		kill = False
+		kill = 0
 
 	if messageData.startswith("boom"):
 		await sendMessage(message, "10")
@@ -555,11 +555,11 @@ async def checkReplies(messageData: str, message: discord.Message) -> None:
 		await sendMessage(message, "3")
 		await sendMessage(message, "2")
 		await sendMessage(message, "1")
-		while kill == False:
+		while kill == 0:
 			await sendMessage(message, "explosion")
 
 	if messageData.startswith("kill"):
-		kill = True
+		kill = 1
 		await sendMessage(message, "disarmed")
 
 
