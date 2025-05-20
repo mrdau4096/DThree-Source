@@ -535,3 +535,6 @@ async def checkReplies(messageData: str, message: discord.Message) -> None:
 	elif ("denmark" in messageData) or ("dane" in messageData):
 		await sendMessage(message, "DANSKJÄVLAR")
 
+	if messageData.startswith("massive","huge","hard","long","big","large","gargantuan")
+		await sendMessage(message, "That's what she said")
+
