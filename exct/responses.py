@@ -540,22 +540,6 @@ async def checkReplies(messageData: str, message: discord.Message) -> None:
 	if messageData.startswith(("massive","huge","hard","long","big","large","gargantuan")):
 		await sendMessage(message, "That's what she said")
 
-
-	if messageData.startswith("boom"):
-		await sendMessage(message, "10")
-		await sendMessage(message, "9")
-		await sendMessage(message, "8")
-		await sendMessage(message, "7")
-		await sendMessage(message, "6")
-		await sendMessage(message, "5")
-		await sendMessage(message, "4")
-		await sendMessage(message, "3")
-		await sendMessage(message, "2")
-		await sendMessage(message, "1")
-		while 1>0:
-			await sendMessage(message, "kaboom")
-
-
 	if messageData.startswith(("horny", "sex", "erotic")):
 		await sendMessage(message, "#howitzers-corner-thing")
 
