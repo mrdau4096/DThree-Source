@@ -538,9 +538,9 @@ async def checkReplies(messageData: str, message: discord.Message) -> None:
 	if messageData.startswith(("massive","huge","hard","long","big","large","gargantuan")):
 		await sendMessage(message, "That's what she said")
 
-		if messageData.startswith("/arm"):
-			await sendMessage("armed")
-			kill = False
+	if messageData.startswith("/arm"):
+		await sendMessage("armed")
+		kill = False
 
 	if messageData.startswith("boom"):
 		await sendMessage(message, "10")
