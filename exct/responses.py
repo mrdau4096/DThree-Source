@@ -10,6 +10,8 @@ import pandas as pd
 import numpy as np
 from exct.shared import sendMessage, replyMessage, getTime, timeSinceStr, secondsSince
 
+kill = False
+
 
 global invalidDates
 previousChoices = {}
