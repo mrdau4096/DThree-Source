@@ -552,8 +552,12 @@ async def checkReplies(messageData: str, message: discord.Message) -> None:
 		await sendMessage(message, "<#1339679370243215401>")
 		return
 
-	elif messageData.startswith("whant"):
+	elif "whant" in messageData:
 		await sendMessage(message, "want")
+		return
+
+	elif "<@&1276999767984967762>" in messageData: #@Un-Pingable
+		await sendMessage(message, "what?")
 		return
 
 
