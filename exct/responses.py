@@ -520,7 +520,8 @@ async def checkReplies(messageData: str, message: discord.Message) -> None:
 		return
 
 	if messageData.startswith("/rate"):
-		await sendMessage(message, random.randint(1,10))
+		await sendMessage(message, str(random.randint(1,10)))
+		return
 
 
 
