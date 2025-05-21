@@ -530,21 +530,31 @@ async def checkReplies(messageData: str, message: discord.Message) -> None:
 	"""
 	if ("canada" in messageData):
 		await sendMessage(message, "Eh?")
+		return
+		
 	elif ("england" in messageData) or ("britain" in messageData):
 		await sendMessage(message, "innit")
+		return
+		
 	elif ("budget" in messageData):
 		await sendMessage(message, "fr")
-	elif ("denmark" in messageData) or ("dane" in messageData):
+		return
+		
+	elif any((phrase in messageData for phrase in ("denmark", "dane"))):
 		await sendMessage(message, "DANSKJÄVLAR")
+		return
 
-	if messageData.startswith(("massive","huge","hard","long","big","large","gargantuan")):
+	elif any((phrase in messageData for phrase in ("massive","huge","hard","long","big","large","gargantuan"))):
 		await sendMessage(message, "That's what she said")
+		return
 
-	if messageData.startswith(("horny", "sex", "sexy", "erotic")):
+	elif any((phrase in messageData for phrase in ("horny", "sex", "sexy", "erotic"))):
 		await sendMessage(message, "<#1339679370243215401>")
+		return
 
-	if messageData.startswith("whant"):
+	elif messageData.startswith("whant"):
 		await sendMessage(message, "want")
+		return
 
 
 
