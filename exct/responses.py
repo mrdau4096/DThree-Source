@@ -8,6 +8,7 @@ import matplotlib.ticker as mticker
 from cycler import cycler
 import pandas as pd
 import numpy as np
+import random
 from exct.shared import sendMessage, replyMessage, getTime, timeSinceStr, secondsSince
 
 kill = 0
