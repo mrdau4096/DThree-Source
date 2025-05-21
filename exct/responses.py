@@ -518,6 +518,9 @@ async def checkReplies(messageData: str, message: discord.Message) -> None:
 		await sendMessage(message, message.content.replace("/echo ", ""))
 		return
 
+	if messageData.startswith("/rate"):
+		await sendMessage(message, random.randint(1,10))
+
 
 
 	#Temporarily removed due to annoyance
@@ -559,6 +562,8 @@ async def checkReplies(messageData: str, message: discord.Message) -> None:
 	elif "<@&1276999767984967762>" in messageData: #@Un-Pingable
 		await sendMessage(message, "what?")
 		return
+
+	
 
 
 
