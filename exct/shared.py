@@ -93,7 +93,7 @@ async def replyMessage(message: discord.Message, messageText: str, ping: bool=Tr
 
 async def updateRepo(message: discord.Message|None=None) -> None:
 	"""
-	Updates the textfiles from [https://github.com/mrdau4096/DThree-Files].
+	Updates the textfiles from [https://github.com/dau4096/DThree-Files].
 	This is called every time DThree is deployed, and also whenever "/updaterepo" is called.
 	If called via "/updaterepo", it sends a reply to that message for confirmation.
 	Otherwise prints confirmation to console.
@@ -116,7 +116,7 @@ def backupData() -> None:
 	"""
 	dataDir = "/project/src/disk/data"
 	github_token = os.getenv("GITHUB_TOKEN")
-	repo_url = f"https://{github_token}@github.com/mrdau4096/DThree-Data-Backups.git"
+	repo_url = f"https://{github_token}@github.com/dau4096/DThree-Data-Backups.git"
 
 	if not os.path.exists(os.path.join(dataDir, ".git")): #Ensure folder is a valid git repo location
 		subprocess.run(["git", "init"], cwd=dataDir)
@@ -138,7 +138,7 @@ def pullData() -> None:
 	"""
 	dataDir = "/project/src/disk/data"
 	github_token = os.getenv("GITHUB_TOKEN")
-	repo_url = f"https://{github_token}@github.com/mrdau4096/DThree-Data-Backups.git"
+	repo_url = f"https://{github_token}@github.com/dau4096/DThree-Data-Backups.git"
 
 	if not os.path.exists(os.path.join(dataDir, ".git")): #Ensure folder is a valid git repo location
 		subprocess.run(["git", "init"], cwd=dataDir)
