@@ -68,7 +68,7 @@ def formatNumber(num: int|float, seperator: str=",", delimiter: str=".") -> str:
 async def sendMessage(message: discord.Message, messageText: str) -> None:
 	with open("/project/src/disk/data/log.txt", "a", encoding="utf-8") as logFile:
 		if "*An error occurred;*" not in messageText:
-			logFile.write("\n" + f"{getTime()} // {message.guild} // SEND {message.author} // {messageText}".replace('\n', ';'))
+			logFile.write("\n" + f"{getTime()} // {message.guild} // SEND {message.author} // {messageText}".strip().replace('\\r\\n', ';').replace('\\n', ';'))
 
 	await message.channel.send(messageText)
 
@@ -85,7 +85,7 @@ async def replyMessage(message: discord.Message, messageText: str, ping: bool=Tr
 
 	with open("/project/src/disk/data/log.txt", "a", encoding="utf-8") as logFile:
 		if "*An error occurred;*" not in messageText:
-			logFile.write("\n" + f"{getTime()} // {message.guild} // REPLY {message.author} // {messageText.strip()}")
+			logFile.write("\n" + f"{getTime()} // {message.guild} // REPLY {message.author} // {messageText.strip().replace('\\r\\n', ';').replace('\\n', ';'))}")
 
 	await message.reply(messageText, mention_author=ping)
 
