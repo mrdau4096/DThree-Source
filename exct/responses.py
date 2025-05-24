@@ -554,7 +554,7 @@ async def checkReplies(messageData: str, message: discord.Message) -> None:
 		return
 
 	elif any((phrase in messageData for phrase in ("horny", "sex", "sexy", "erotic"))):
-		await sendMessage(message, "<#1339679370243215401>")
+		await sendMessage(message, "#1071506608833691729")
 		return
 
 	elif "whant" in messageData:
