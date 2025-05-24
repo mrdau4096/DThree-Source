@@ -545,11 +545,11 @@ async def checkReplies(messageData: str, message: discord.Message) -> None:
 		await sendMessage(message, "fr")
 		return
 		
-	elif any((phrase in messageData for phrase in ("denmark", "dane"))):
+	elif any((phrase in messageData for phrase in ("denmark", "dane", "danmark", "dansk"))):
 		await sendMessage(message, "DANSKJÄVLAR")
 		return
 
-	elif any((phrase in messageData for phrase in ("massive","huge","hard","long","big","large","gargantuan"))):
+	elif any((phrase in messageData for phrase in ("massive","huge","gargantuan"))):
 		await sendMessage(message, "That's what she said")
 		return
 
